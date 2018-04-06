@@ -58,6 +58,19 @@ var scopes = Object.freeze({
 	WEIGHT: WEIGHT
 });
 
+const ACTIVITIES = 'activities';
+const BODY = 'body';
+const FOODS = 'foods';
+const SLEEP$1 = 'sleep';
+
+var subscriptionCollections = Object.freeze({
+	ACTIVITIES: ACTIVITIES,
+	BODY: BODY,
+	FOODS: FOODS,
+	SLEEP: SLEEP$1
+});
+
 exports.ACTIVITY_TYPES = activityTypes;
 exports.INTRADAY_RESOURCES = intradayResources;
 exports.SCOPES = scopes;
+exports.SUBSCRIPTION_COLLECTIONS = subscriptionCollections;

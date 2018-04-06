@@ -54,4 +54,16 @@ var scopes = Object.freeze({
 	WEIGHT: WEIGHT
 });
 
-export { activityTypes as ACTIVITY_TYPES, intradayResources as INTRADAY_RESOURCES, scopes as SCOPES };
+const ACTIVITIES = 'activities';
+const BODY = 'body';
+const FOODS = 'foods';
+const SLEEP$1 = 'sleep';
+
+var subscriptionCollections = Object.freeze({
+	ACTIVITIES: ACTIVITIES,
+	BODY: BODY,
+	FOODS: FOODS,
+	SLEEP: SLEEP$1
+});
+
+export { activityTypes as ACTIVITY_TYPES, intradayResources as INTRADAY_RESOURCES, scopes as SCOPES, subscriptionCollections as SUBSCRIPTION_COLLECTIONS };

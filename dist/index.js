@@ -148,12 +148,17 @@ class ActivityFactory {
     static getActivityFromApi(activity) {
         const { distance } = activity;
 
+        const activityId = activity.activityTypeId || activity.activityId;
+        if (!activityId) {
+            throw new FitbitException('Activity type ID was not found in API response.');
+        }
+
         return new Activity({
             start: luxon.DateTime.fromISO(activity.startTime),
             id: activity.logId,
             duration: luxon.Duration.fromMillis(activity.duration),
             typeName: activity.activityName || activity.name,
-            typeId: activity.activityTypeId,
+            typeId: activityId,
             heartRateAvg: activity.averageHeartRate,
             calories: activity.calories,
             distance: distance != null ? math.unit(activity.distance, 'km') : null,
@@ -318,6 +323,16 @@ class Api extends dist.Api {
         };
     }
 
+    async getActivitySummary(date, userId) {
+        const url = this.getApiUrl(`activities/date/${typeof date === 'string' ? date : date.toFormat(this.dateFormat)}`, userId);
+        const { data } = await this.get(url);
+        return _extends({}, data, {
+            activities: data.activities.map(activity => {
+                return ActivityFactory.getActivityFromApi(activity);
+            })
+        });
+    }
+
     // eslint-disable-next-line complexity
     async getActivities(filters) {
         const {
@@ -374,7 +389,13 @@ class Api extends dist.Api {
         return Promise.all(processorPromises);
     }
 
-    async createActivity(activity) {
+    /**
+     * https://dev.fitbit.com/build/reference/web-api/activity/#activity-logging
+     *
+     * @param activity
+     * @returns {Promise<Activity>}
+     */
+    async logActivity(activity) {
         const calories = activity.getCalories();
         const distance = activity.getDistance();
 
@@ -388,6 +409,56 @@ class Api extends dist.Api {
         const { data } = await this.post(this.getApiUrl('activities'), parameters, Api.FORMATS.FORM_DATA_FORMAT);
 
         return ActivityFactory.getActivityFromApi(data.activityLog);
+    }
+
+    async requestSubscription(method, collection, id, subscriberId) {
+        const { data } = await this.request(this.getApiUrl(`${collection ? `${collection}/` : ''}apiSubscriptions${id ? `/${id}` : ''}`), method, {}, _extends({}, subscriberId ? { 'X-Fitbit-Subscriber-Id': subscriberId } : {}));
+        return data;
+    }
+
+    /**
+     * https://dev.fitbit.com/build/reference/web-api/subscriptions/#adding-a-subscription
+     *
+     * @param id
+     * @param collection
+     * @param subscriberId
+     * @returns {Promise<SubscriptionResponse>}
+     */
+    async addSubscription(id, collection, subscriberId) {
+        const data = await this.requestSubscription('POST', collection, id, subscriberId);
+
+        return _extends({}, data, {
+            subscriberId: Number(data.subscriberId),
+            subscriptionId: Number(data.subscriptionId)
+        });
+    }
+
+    /**
+     * https://dev.fitbit.com/build/reference/web-api/subscriptions/#deleting-a-subscription
+     *
+     * @param id
+     * @param collection
+     * @param subscriberId
+     * @returns {Promise<Object>}
+     */
+    deleteSubscription(id, collection, subscriberId) {
+        return this.requestSubscription('DELETE', collection, id, subscriberId);
+    }
+
+    /**
+     * https://dev.fitbit.com/build/reference/web-api/subscriptions/#getting-a-list-of-subscriptions
+     *
+     * @param collection
+     * @returns {Promise<void>}
+     */
+    async getSubscriptions(collection) {
+        const data = await this.requestSubscription('GET', collection);
+        return data.apiSubscriptions.map(subscription => {
+            return _extends({}, subscription, {
+                subscriberId: Number(subscription.subscriberId),
+                subscriptionId: Number(subscription.subscriptionId)
+            });
+        });
     }
 }
 
@@ -447,10 +518,23 @@ var scopes = Object.freeze({
 	WEIGHT: WEIGHT
 });
 
+const ACTIVITIES = 'activities';
+const BODY = 'body';
+const FOODS = 'foods';
+const SLEEP$1 = 'sleep';
+
+var subscriptionCollections = Object.freeze({
+	ACTIVITIES: ACTIVITIES,
+	BODY: BODY,
+	FOODS: FOODS,
+	SLEEP: SLEEP$1
+});
+
 exports.Api = Api;
 exports.ACTIVITY_TYPES = activityTypes;
 exports.INTRADAY_RESOURCES = intradayResources;
 exports.SCOPES = scopes;
+exports.SUBSCRIPTION_COLLECTIONS = subscriptionCollections;
 exports.FitbitException = FitbitException;
 exports.FitbitApiException = FitbitApiException;
 exports.ActivityFactory = ActivityFactory;

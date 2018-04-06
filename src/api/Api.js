@@ -9,7 +9,7 @@ import { DateTime } from 'luxon';
 import { FitbitApiException } from './../exceptions';
 import { ActivityFactory } from './../factories';
 import { Activity } from './../models';
-import type { IntradayResource, ApiToken, ActivityFilters, ApiActivity, Scope } from './../types';
+import type { IntradayResource, ApiToken, ActivityFilters, ApiActivity, Scope, SubscriptionCollection } from './../types';
 import ResponseProcessor from './ResponseProcessor';
 
 type ResponseType = 'code' | 'token';
@@ -34,6 +34,38 @@ export type IntradayResponse = {
         time: DateTime,
         value: number,
     }>,
+}
+
+export type SubscriptionResponse = {
+    collectionType: string,
+    ownerId: string,
+    ownerType: string,
+    subscriberId: number,
+    subscriptionId: number,
+}
+
+export type ActivitySummaryResponse = {
+    activities: Array<Activity>,
+    goals: {
+        caloriesOut: number,
+        distance: number,
+        floors: number,
+        steps: number,
+    },
+    summary: {
+        activityCalories: number,
+        caloriesBMR: number,
+        caloriesOut: number,
+        distances: Array<{ activity: string, distance: number }>,
+        elevation: number,
+        fairlyActiveMinutes: number,
+        floors: number,
+        lightlyActiveMinutes: number,
+        marginalCalories: number,
+        sedentaryMinutes: number,
+        steps: number,
+        veryActiveMinutes: number,
+    },
 }
 
 export type Token = ApiToken & {
@@ -176,6 +208,17 @@ export default class Api extends ApiBase<ApiResponseType<*>> {
         };
     }
 
+    async getActivitySummary(date: DateTime | string, userId: ?number): Promise<ActivitySummaryResponse> {
+        const url = this.getApiUrl(`activities/date/${typeof date === 'string' ? date : date.toFormat(this.dateFormat)}`, userId);
+        const { data } = await this.get(url);
+        return {
+            ...data,
+            activities: data.activities.map((activity) => {
+                return ActivityFactory.getActivityFromApi(activity);
+            }),
+        };
+    }
+
     // eslint-disable-next-line complexity
     async getActivities(filters: ActivityFilters): Promise<ActivityResponse> {
         const {
@@ -238,7 +281,13 @@ export default class Api extends ApiBase<ApiResponseType<*>> {
         return Promise.all(processorPromises);
     }
 
-    async createActivity(activity: Activity): Promise<Activity> {
+    /**
+     * https://dev.fitbit.com/build/reference/web-api/activity/#activity-logging
+     *
+     * @param activity
+     * @returns {Promise<Activity>}
+     */
+    async logActivity(activity: Activity): Promise<Activity> {
         const calories = activity.getCalories();
         const distance = activity.getDistance();
 
@@ -254,5 +303,69 @@ export default class Api extends ApiBase<ApiResponseType<*>> {
         const { data } = await this.post(this.getApiUrl('activities'), parameters, Api.FORMATS.FORM_DATA_FORMAT);
 
         return ActivityFactory.getActivityFromApi(data.activityLog);
+    }
+
+    async requestSubscription(
+        method: 'POST' | 'DELETE' | 'GET',
+        collection: ?SubscriptionCollection,
+        id: ?number,
+        subscriberId: ?number,
+    ): Promise<Object> {
+        const { data } = await this.request(
+            this.getApiUrl(`${collection ? `${collection}/` : ''}apiSubscriptions${id ? `/${id}` : ''}`),
+            method,
+            {},
+            {
+                ...(subscriberId ? { 'X-Fitbit-Subscriber-Id': subscriberId } : {}),
+            },
+        );
+        return data;
+    }
+
+    /**
+     * https://dev.fitbit.com/build/reference/web-api/subscriptions/#adding-a-subscription
+     *
+     * @param id
+     * @param collection
+     * @param subscriberId
+     * @returns {Promise<SubscriptionResponse>}
+     */
+    async addSubscription(id: number, collection: ?SubscriptionCollection, subscriberId: ?number): Promise<SubscriptionResponse> {
+        const data = await this.requestSubscription('POST', collection, id, subscriberId);
+
+        return {
+            ...data,
+            subscriberId: Number(data.subscriberId),
+            subscriptionId: Number(data.subscriptionId),
+        };
+    }
+
+    /**
+     * https://dev.fitbit.com/build/reference/web-api/subscriptions/#deleting-a-subscription
+     *
+     * @param id
+     * @param collection
+     * @param subscriberId
+     * @returns {Promise<Object>}
+     */
+    deleteSubscription(id: number, collection: ?SubscriptionCollection, subscriberId: ?number): Promise<Object> {
+        return this.requestSubscription('DELETE', collection, id, subscriberId);
+    }
+
+    /**
+     * https://dev.fitbit.com/build/reference/web-api/subscriptions/#getting-a-list-of-subscriptions
+     *
+     * @param collection
+     * @returns {Promise<void>}
+     */
+    async getSubscriptions(collection: ?SubscriptionCollection): Promise<Array<SubscriptionResponse>> {
+        const data = await this.requestSubscription('GET', collection);
+        return data.apiSubscriptions.map((subscription) => {
+            return {
+                ...subscription,
+                subscriberId: Number(subscription.subscriberId),
+                subscriptionId: Number(subscription.subscriptionId),
+            };
+        });
     }
 }

@@ -1,6 +1,12 @@
 import math from 'mathjs';
 import { DateTime, Duration } from 'luxon';
 
+class FitbitException extends Error {
+    constructor(message) {
+        super(`Fitbit Error: ${message}`);
+    }
+}
+
 class Activity {
 
     // eslint-disable-next-line complexity
@@ -125,12 +131,17 @@ class ActivityFactory {
     static getActivityFromApi(activity) {
         const { distance } = activity;
 
+        const activityId = activity.activityTypeId || activity.activityId;
+        if (!activityId) {
+            throw new FitbitException('Activity type ID was not found in API response.');
+        }
+
         return new Activity({
             start: DateTime.fromISO(activity.startTime),
             id: activity.logId,
             duration: Duration.fromMillis(activity.duration),
             typeName: activity.activityName || activity.name,
-            typeId: activity.activityTypeId,
+            typeId: activityId,
             heartRateAvg: activity.averageHeartRate,
             calories: activity.calories,
             distance: distance != null ? math.unit(activity.distance, 'km') : null,

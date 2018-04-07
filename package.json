@@ -1,6 +1,6 @@
 {
   "name": "fitbit-api-handler",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Unofficial handler for Fitbit API",
   "main": "./src/index.js",
   "scripts": {

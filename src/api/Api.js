@@ -40,8 +40,8 @@ export type SubscriptionResponse = {
     collectionType: string,
     ownerId: string,
     ownerType: string,
-    subscriberId: number,
-    subscriptionId: number,
+    subscriberId: string,
+    subscriptionId: string,
 }
 
 export type ActivitySummaryResponse = {
@@ -180,8 +180,8 @@ export default class Api extends ApiBase<ApiResponseType<*>> {
         });
     }
 
-    getApiUrl(namespace: string, userId: ?number, version: string = '1', file: string = 'json'): string {
-        return `${version}/user/${userId ? userId.toString() : '-'}/${namespace}.${file}`;
+    getApiUrl(namespace: string, userId: ?string, version: string = '1', file: string = 'json'): string {
+        return `${version}/user/${userId || '-'}/${namespace}.${file}`;
     }
 
     async getIntradayData(
@@ -208,7 +208,7 @@ export default class Api extends ApiBase<ApiResponseType<*>> {
         };
     }
 
-    async getActivitySummary(date: DateTime | string, userId: ?number): Promise<ActivitySummaryResponse> {
+    async getActivitySummary(date: DateTime | string, userId: ?string): Promise<ActivitySummaryResponse> {
         const url = this.getApiUrl(`activities/date/${typeof date === 'string' ? date : date.toFormat(this.dateFormat)}`, userId);
         const { data } = await this.get(url);
         return {
@@ -244,23 +244,16 @@ export default class Api extends ApiBase<ApiResponseType<*>> {
         };
     }
 
-    async getActivityBetweenDates(from: DateTime, to: DateTime): Promise<?Activity> {
-        const { activities } = await this.getActivities({
+    async getActivitiesBetweenDates(from: DateTime, to: DateTime): Promise<ActivityResponse> {
+        const data = await this.getActivities({
             afterDate: from,
         });
 
-        const activity = activities[0];
-
-        if (!activity) {
-            return null;
-        }
-
-        // $FlowFixMe
-        if (activity.getStart() <= to) {
-            return activity;
-        }
-
-        return null;
+        return {
+            ...data,
+            // $FlowFixMe
+            activities: data.activities.filter(activity => activity.getStart() <= to),
+        };
     }
 
     async processActivities(
@@ -308,7 +301,7 @@ export default class Api extends ApiBase<ApiResponseType<*>> {
     async requestSubscription(
         method: 'POST' | 'DELETE' | 'GET',
         collection: ?SubscriptionCollection,
-        id: ?number,
+        id: ?string,
         subscriberId: ?number,
     ): Promise<Object> {
         const { data } = await this.request(
@@ -330,7 +323,7 @@ export default class Api extends ApiBase<ApiResponseType<*>> {
      * @param subscriberId
      * @returns {Promise<SubscriptionResponse>}
      */
-    async addSubscription(id: number, collection: ?SubscriptionCollection, subscriberId: ?number): Promise<SubscriptionResponse> {
+    async addSubscription(id: string, collection: ?SubscriptionCollection, subscriberId: ?number): Promise<SubscriptionResponse> {
         const data = await this.requestSubscription('POST', collection, id, subscriberId);
 
         return {
@@ -348,7 +341,7 @@ export default class Api extends ApiBase<ApiResponseType<*>> {
      * @param subscriberId
      * @returns {Promise<Object>}
      */
-    deleteSubscription(id: number, collection: ?SubscriptionCollection, subscriberId: ?number): Promise<Object> {
+    deleteSubscription(id: string, collection: ?SubscriptionCollection, subscriberId: ?number): Promise<Object> {
         return this.requestSubscription('DELETE', collection, id, subscriberId);
     }
 
@@ -360,12 +353,6 @@ export default class Api extends ApiBase<ApiResponseType<*>> {
      */
     async getSubscriptions(collection: ?SubscriptionCollection): Promise<Array<SubscriptionResponse>> {
         const data = await this.requestSubscription('GET', collection);
-        return data.apiSubscriptions.map((subscription) => {
-            return {
-                ...subscription,
-                subscriberId: Number(subscription.subscriberId),
-                subscriptionId: Number(subscription.subscriptionId),
-            };
-        });
+        return data.apiSubscriptions;
     }
 }

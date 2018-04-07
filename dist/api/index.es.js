@@ -9,12 +9,23 @@ class FitbitException extends Error {
     }
 }
 
+// eslint-disable-next-line no-unused-vars
+
+
 class FitbitApiException extends FitbitException {
 
     constructor(response, request) {
-        super(JSON.stringify(response.data));
+        super(response.data.errors.map(item => item.message).join(', '));
         this.response = response;
         this.request = request;
+    }
+
+    getErrors() {
+        return this.response.data.errors;
+    }
+
+    hasError(error) {
+        return typeof this.getErrors().find(item => item.errorType === error) === 'string';
     }
 }
 
@@ -295,7 +306,7 @@ class Api$1 extends Api {
     }
 
     getApiUrl(namespace, userId, version = '1', file = 'json') {
-        return `${version}/user/${userId ? userId.toString() : '-'}/${namespace}.${file}`;
+        return `${version}/user/${userId || '-'}/${namespace}.${file}`;
     }
 
     async getIntradayData(resource, from, to, detail = '1min') {
@@ -349,23 +360,15 @@ class Api$1 extends Api {
         });
     }
 
-    async getActivityBetweenDates(from, to) {
-        const { activities } = await this.getActivities({
+    async getActivitiesBetweenDates(from, to) {
+        const data = await this.getActivities({
             afterDate: from
         });
 
-        const activity = activities[0];
-
-        if (!activity) {
-            return null;
-        }
-
-        // $FlowFixMe
-        if (activity.getStart() <= to) {
-            return activity;
-        }
-
-        return null;
+        return _extends({}, data, {
+            // $FlowFixMe
+            activities: data.activities.filter(activity => activity.getStart() <= to)
+        });
     }
 
     async processActivities(filter, processor) {
@@ -447,12 +450,7 @@ class Api$1 extends Api {
      */
     async getSubscriptions(collection) {
         const data = await this.requestSubscription('GET', collection);
-        return data.apiSubscriptions.map(subscription => {
-            return _extends({}, subscription, {
-                subscriberId: Number(subscription.subscriberId),
-                subscriptionId: Number(subscription.subscriptionId)
-            });
-        });
+        return data.apiSubscriptions;
     }
 }
 

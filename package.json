@@ -31,7 +31,7 @@
   },
   "dependencies": {
     "cookie": "^0.3.1",
-    "luxon": "^0.5.8",
+    "luxon": "^1.0.0",
     "mathjs": "^4.0.1",
     "query-string": "^6.0.0",
     "rest-api-handler": "^1.4.0"

@@ -1,6 +1,10 @@
 # Fitbit API handler
 
-[![codecov](https://img.shields.io/npm/v/fitbit-api-handler.svg)](https://www.npmjs.com/package/fitbit-api-handler) [![codecov](https://codecov.io/gh/fabulator/fitbit-api-handler/branch/master/graph/badge.svg)](https://codecov.io/gh/fabulator/fitbit-api-handler)  [![codecov](https://travis-ci.org/fabulator/fitbit-api-handler.svg?branch=master)](https://travis-ci.org/fabulator/fitbit-api-handler) [![Maintainability](https://api.codeclimate.com/v1/badges/7ab35417954388460660/maintainability)](https://codeclimate.com/github/fabulator/fitbit-api-handler/maintainability)
+[![npm version](https://badge.fury.io/js/fitbit-api-handler.svg)](https://badge.fury.io/js/fitbit-api-handler)
+[![renovate-app](https://img.shields.io/badge/renovate-app-blue.svg)](https://renovateapp.com/) 
+[![Known Vulnerabilities](https://snyk.io/test/github/fabulator/fitbit-api-handler/badge.svg)](https://snyk.io/test/github/fabulator/fitbit-api-handler)
+[![codecov](https://codecov.io/gh/fabulator/fitbit-api-handler/branch/master/graph/badge.svg)](https://codecov.io/gh/fabulator/fitbit-api-handler) 
+[![travis](https://travis-ci.org/fabulator/fitbit-api-handler.svg?branch=master)](https://travis-ci.org/fabulator/fitbit-api-handler)
 
 This is an unofficial web API SDK for Fitbit. Current focus is to work with activities but it is possible to request all other endpoints.
 

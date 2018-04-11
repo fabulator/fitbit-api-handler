@@ -8,10 +8,11 @@
     "js-lint-export": "npm run js-lint -- -o ./tests_results/checkstyle/js-checkstyle.xml -f checkstyle",
     "flow": "node node_modules/flow-bin/vendor/flow",
     "flow-coverage": "node node_modules/flow-coverage-report/bin/flow-coverage-report.js -f \"node node_modules/flow-bin/vendor/flow\" -i ./src/**/*.js* -t html -t text -t json -o tests_results/coverage/flow",
-    "flow-init": "node node_modules/flow-typed/dist/cli.js install form-data@x.x",
+    "flow-init": "node node_modules/flow-typed/dist/cli.js install jest@22.x query-string@6.x luxon@0.4.x",
     "build": "rm -rf ./dist && node node_modules/rollup/bin/rollup --config ./rollup.config.js",
     "test": "node ./node_modules/jest/bin/jest.js",
-    "precommit": "npm run js-lint && npm run flow && npm run test && npm run build"
+    "prepr": "npm run js-lint && npm run flow && npm run test",
+    "prepublishOnly": "npm run build"
   },
   "repository": {
     "type": "git",

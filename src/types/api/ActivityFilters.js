@@ -1,5 +1,5 @@
 // @flow
-import { DateTime } from 'luxon';
+import type { DateTime } from 'luxon';
 
 export type ActivityFilters = {
     beforeDate?: ?(DateTime | string),

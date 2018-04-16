@@ -1,6 +1,6 @@
 module.exports = {
     extends: [
-        'socifi',
+        '@socifi',
     ],
     settings: {
         polyfills: [
@@ -8,5 +8,4 @@ module.exports = {
             'promises',
         ],
     },
-    root: true,
 };

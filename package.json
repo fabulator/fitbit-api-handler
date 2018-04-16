@@ -1,39 +1,44 @@
 {
   "name": "fitbit-api-handler",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Unofficial handler for Fitbit API",
   "main": "./src/index.js",
-  "scripts": {
-    "js-lint": "node node_modules/eslint/bin/eslint.js --ext .js ./src ./tests",
-    "js-lint-export": "npm run js-lint -- -o ./tests_results/checkstyle/js-checkstyle.xml -f checkstyle",
-    "flow": "node node_modules/flow-bin/vendor/flow",
-    "flow-coverage": "node node_modules/flow-coverage-report/bin/flow-coverage-report.js -f \"node node_modules/flow-bin/vendor/flow\" -i ./src/**/*.js* -t html -t text -t json -o tests_results/coverage/flow",
-    "flow-init": "node node_modules/flow-typed/dist/cli.js install jest@22.x query-string@6.x luxon@0.4.x",
-    "build": "rm -rf ./dist && node node_modules/rollup/bin/rollup --config ./rollup.config.js",
-    "test": "node ./node_modules/jest/bin/jest.js",
-    "prepr": "npm run js-lint && npm run flow && npm run test",
-    "prepublishOnly": "npm run build"
-  },
+  "jsnext:main": "dist/index.es.js",
+  "module": "dist/index.es.js",
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com/fabulator/fitbit-api-handler.git"
   },
+  "bugs": {
+    "url": "https://github.com/fabulator/fitbit-api-handler/issues"
+  },
+  "homepage": "https://github.com/fabulator/fitbit-api-handler",
   "author": "Michal Ozogán <michal@ozogan.eu>",
-  "license": "Apache License 2.0",
-  "homepage": "https://github.com/fabulator/fitbit-api-handler#readme",
+  "license": "Apache-2.0",
+  "scripts": {
+    "lint": "eslint ./src ./tests",
+    "lint-export": "npm run lint -- -o ./tests_results/checkstyle/js-checkstyle.xml -f checkstyle",
+    "flow": "flow",
+    "flow-coverage": "flow-coverage-report -f \"node node_modules/flow-bin/vendor/flow\" -i ./src/**/*.js* -t html -t text -t json -o tests_results/coverage/flow",
+    "flow-init": "flow-typed install jest@22.x query-string@6.x luxon@0.4.x",
+    "test": "jest",
+    "test-build": "npm run test -- --config jest.config.build.js",
+    "test-all": "npm run lint && npm run flow && npm run test",
+    "build": "rm -rf ./dist && rollup --config ./rollup.config.js",
+    "prepublishOnly": "npm run build && npm run test-build"
+  },
   "devDependencies": {
-    "eslint-config-socifi": "^1.5.0",
+    "@socifi/eslint-config": "^1.6.2",
     "flow-bin": "^0.69.0",
     "flow-coverage-report": "^0.5.0",
     "flow-typed": "^2.3.0",
-    "socifi-jest-config": "^1.4.0",
-    "socifi-rollup-config": "^1.6.0"
+    "@socifi/jest-config": "^1.5.0",
+    "@socifi/rollup-config": "^1.7.0"
   },
   "dependencies": {
-    "cookie": "^0.3.1",
     "luxon": "^1.0.0",
     "mathjs": "^4.0.1",
     "query-string": "^6.0.0",
-    "rest-api-handler": "^1.4.0"
+    "rest-api-handler": "^1.6.0"
   }
 }

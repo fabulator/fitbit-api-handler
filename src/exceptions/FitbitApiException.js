@@ -19,7 +19,8 @@ export default class FitbitApiException extends FitbitException {
     request: Request;
 
     constructor(response: ApiResponseType<*>, request: Request) {
-        super(response.data.errors.map(item => item.message).join(', '));
+        const { data } = response;
+        super(data.errors ? data.errors.map(item => item.message).join(', ') : JSON.stringify(data));
         this.response = response;
         this.request = request;
     }

@@ -2,6 +2,14 @@
 All notable changes to this project will be documented in this file.
 
 
+## [0.4.0] - 2018-04-16
+### Changed
+- Update dependencies
+
+### Fixed
+- Fix undefined index in Fitbit Api exception
+
+
 ## [0.3.0] - 2018-04-07
 ### Changed
 - Change method getActivityBetweenDates to getActivitiesBetweenDates

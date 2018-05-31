@@ -11,3 +11,4 @@ tests
 dev
 flow-typed
 tests_results
+jest.config.build.js

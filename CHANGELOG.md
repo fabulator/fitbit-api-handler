@@ -2,6 +2,14 @@
 All notable changes to this project will be documented in this file.
 
 
+## [1.0.0] - 2018-05-31
+### Changed
+- Jupijou, version 1.0
+
+### Fixed
+- Fix path to main file
+
+
 ## [0.4.0] - 2018-04-16
 ### Changed
 - Update dependencies

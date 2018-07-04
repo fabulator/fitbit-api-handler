@@ -15,7 +15,7 @@ export default class ActivityFactory {
         }
 
         return new Activity({
-            start: DateTime.fromISO(activity.startTime),
+            start: DateTime.fromISO(activity.startTime, { setZone: true }),
             id: activity.logId,
             duration: Duration.fromMillis(activity.duration),
             typeName: activity.activityName || activity.name,

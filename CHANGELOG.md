@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 
 
+## [1.0.1] - 2018-07-04
+### Fixed
+- Fixed timezone of activity
+
+
 ## [1.0.0] - 2018-05-31
 ### Changed
 - Jupijou, version 1.0

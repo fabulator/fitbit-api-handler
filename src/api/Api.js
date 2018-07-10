@@ -219,6 +219,11 @@ export default class Api extends ApiBase<ApiResponseType<*>> {
         };
     }
 
+    async getActivity(activityId: number): Promise<Activity> {
+        const { data } = await this.get(this.getApiUrl(`activities/${activityId}`, null, '1.1'));
+        return ActivityFactory.getActivityFromApi(data.activityLog);
+    }
+
     // eslint-disable-next-line complexity
     async getActivities(filters: ActivityFilters): Promise<ActivityResponse> {
         const {

@@ -9,23 +9,54 @@ import { DateTime } from 'luxon';
 import { FitbitApiException } from './../exceptions';
 import { ActivityFactory } from './../factories';
 import { Activity } from './../models';
-import type { IntradayResource, ApiToken, ActivityFilters, ApiActivity, Scope, SubscriptionCollection } from './../types';
+import type {
+    IntradayResource,
+    ApiToken,
+    ActivityFilters,
+    ApiActivity,
+    ApiSleep,
+    Scope,
+    SubscriptionCollection,
+    DateFilters,
+} from './../types';
 import ResponseProcessor from './ResponseProcessor';
 
 type ResponseType = 'code' | 'token';
 type Prompt = 'consent' | 'login' | 'login consent' | 'none';
 type DetailLevel = '1sec' | '1min' | '15min';
 
+type Pagination = {
+    afterDate?: string,
+    limit: number,
+    next: string,
+    offset: number,
+    previous: string,
+    sort: string,
+}
+
 export type ActivityResponse = {
     activities: Array<Activity>,
-    pagination: {
-        afterDate?: string,
-        limit: number,
-        next: string,
-        offset: number,
-        previous: string,
-        sort: string,
-    }
+    pagination: Pagination,
+}
+
+export type SleepProcessedResponse = {
+    sleep: Array<{
+        dateOfSleep: string,
+        duration: number,
+        efficiency: number,
+        endTime: DateTime,
+        infoCode: number,
+        levels: Object,
+        logId: number,
+        minutesAfterWakeup: number,
+        minutesAsleep: number,
+        minutesAwake: number,
+        minutesToFallAsleep: number,
+        startTime: DateTime,
+        timeInBed: number,
+        type: string,
+    }>,
+    pagination: Pagination,
 }
 
 export type IntradayResponse = {
@@ -219,13 +250,7 @@ export default class Api extends ApiBase<ApiResponseType<*>> {
         };
     }
 
-    async getActivity(activityId: number): Promise<Activity> {
-        const { data } = await this.get(this.getApiUrl(`activities/${activityId}`, null, '1.1'));
-        return ActivityFactory.getActivityFromApi(data.activityLog);
-    }
-
-    // eslint-disable-next-line complexity
-    async getActivities(filters: ActivityFilters): Promise<ActivityResponse> {
+    processDateFilters(filters: DateFilters) {
         const {
             afterDate,
             beforeDate,
@@ -233,13 +258,41 @@ export default class Api extends ApiBase<ApiResponseType<*>> {
             offset,
         } = filters;
 
-        const { data } = await this.get(this.getApiUrl('activities/list'), {
+        return {
             sort: afterDate ? 'asc' : 'desc',
             offset: offset || 0,
             limit: limit || 10,
             ...(afterDate ? { afterDate: typeof afterDate === 'string' ? afterDate : this.getDateTimeString(afterDate) } : {}),
             ...(beforeDate ? { beforeDate: typeof beforeDate === 'string' ? beforeDate : this.getDateTimeString(beforeDate) } : {}),
-        });
+        };
+    }
+
+    async getSleeps(filters: DateFilters): Promise<SleepProcessedResponse> {
+        const { data } = await this.get(
+            this.getApiUrl('sleep/list', undefined, '1.2'),
+            this.processDateFilters(filters),
+        );
+
+        return {
+            ...data,
+            sleep: data.sleep.map((sleep: ApiSleep) => {
+                return {
+                    ...sleep,
+                    endTime: DateTime.fromISO(sleep.endTime),
+                    startTime: DateTime.fromISO(sleep.startTime),
+                };
+            }),
+        };
+    }
+
+    async getActivity(activityId: number): Promise<Activity> {
+        const { data } = await this.get(this.getApiUrl(`activities/${activityId}`, null, '1.1'));
+        return ActivityFactory.getActivityFromApi(data.activityLog);
+    }
+
+    // eslint-disable-next-line complexity
+    async getActivities(filters: ActivityFilters): Promise<ActivityResponse> {
+        const { data } = await this.get(this.getApiUrl('activities/list'), this.processDateFilters(filters));
 
         return {
             ...data,

@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 
 
+## [1.2.0] - 2018-08-10
+### Added
+- Add sleep endpoint
+
+
 ## [1.0.1] - 2018-07-04
 ### Fixed
 - Fixed timezone of activity

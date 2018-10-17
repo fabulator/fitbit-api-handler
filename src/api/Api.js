@@ -325,7 +325,7 @@ export default class Api extends ApiBase<ApiResponseType<*>> {
         });
 
         if (pagination.next) {
-            const data = queryString.parseUrl(pagination.next).query;
+            const data: Object = queryString.parseUrl(pagination.next).query;
             processorPromises.push(...await this.processActivities(data, processor));
         }
 

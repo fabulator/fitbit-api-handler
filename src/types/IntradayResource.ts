@@ -1,5 +1,11 @@
-// @flow
-import { CALORIES, STEPS, DISTANCE, FLOORS, ELEVATION, HEART } from './../constants/intraday-resources';
+import {
+    CALORIES,
+    STEPS,
+    DISTANCE,
+    FLOORS,
+    ELEVATION,
+    HEART,
+} from '../constants/intraday-resources';
 
 export type IntradayResource = typeof CALORIES |
     typeof STEPS |

@@ -1,10 +1,11 @@
 {
   "name": "fitbit-api-handler",
-  "version": "1.2.0",
+  "version": "2.0.0",
   "description": "Unofficial handler for Fitbit API",
-  "main": "./dist/index.js",
-  "jsnext:main": "dist/index.es.js",
-  "module": "dist/index.es.js",
+  "main": "dist/index.js",
+  "jsnext:main": "dist/index.esm.js",
+  "module": "dist/index.esm.js",
+  "types": "dist/index.d.ts",
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com/fabulator/fitbit-api-handler.git"
@@ -16,29 +17,28 @@
   "author": "Michal Ozogán <michal@ozogan.eu>",
   "license": "Apache-2.0",
   "scripts": {
-    "lint": "eslint ./src ./tests",
-    "lint-export": "npm run lint -- -o ./tests_results/checkstyle/js-checkstyle.xml -f checkstyle",
-    "flow": "flow",
-    "flow-coverage": "flow-coverage-report -f \"node node_modules/flow-bin/vendor/flow\" -i ./src/**/*.js* -t html -t text -t json -o tests_results/coverage/flow",
-    "flow-init": "flow-typed install jest@22.x query-string@6.x luxon@0.4.x",
+    "lint": "eslint --ext .ts ./src ./tests",
+    "lint:export": "npm run lint -- -o ./tests_results/checkstyle/js-checkstyle.xml -f checkstyle",
+    "tsc": "tsc",
     "test": "jest",
-    "test-build": "npm run test -- --config jest.config.build.js",
-    "test-all": "npm run lint && npm run flow && npm run test",
-    "build": "rm -rf ./dist && rollup --config ./rollup.config.js",
-    "prepublishOnly": "npm run build && npm run test-build"
+    "test:build": "npm run test -- --config jest.config.build.js",
+    "build": "rollup --config ./rollup.config.js",
+    "test:all": "npm run lint && npm run tsc && npm run test",
+    "prepublishOnly": "npm run build && npm run tsc && npm run test:build"
   },
   "devDependencies": {
-    "@socifi/eslint-config": "^1.10.0",
-    "flow-bin": "^0.86.0",
-    "flow-coverage-report": "^0.6.0",
-    "flow-typed": "^2.5.1",
-    "@socifi/jest-config": "^1.10.0",
-    "@socifi/rollup-config": "^1.10.0"
+    "@socifi/babel-config": "^0.6.0",
+    "@socifi/eslint-config": "^2.0.1",
+    "@socifi/jest-config": "^2.1.0",
+    "@socifi/rollup-config": "^2.0.1",
+    "@types/luxon": "^1.4.1",
+    "@types/mathjs": "^4.4.3",
+    "@types/query-string": "^6.1.1"
   },
   "dependencies": {
-    "luxon": "^1.4.3",
-    "mathjs": "^5.2.0",
+    "luxon": "^1.7.1",
+    "mathjs": "^5.2.3",
     "query-string": "^6.2.0",
-    "rest-api-handler": "^1.8.1"
+    "rest-api-handler": "^2.0.0"
   }
 }

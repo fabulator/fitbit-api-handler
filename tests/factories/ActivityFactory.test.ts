@@ -1,4 +1,4 @@
-import { ActivityFactory, Activity } from './../../src';
+import { Activity } from '../../src';
 
 describe('Test PointFactory class', () => {
     it('create point from api response', () => {
@@ -21,7 +21,7 @@ describe('Test PointFactory class', () => {
             heartRateZones: [],
             lastModified: '',
             logId: 1,
-            logType: 5,
+            logType: '',
             manualValuesSpecified: {},
             originalDuration: 1,
             originalStartTime: '',
@@ -32,7 +32,7 @@ describe('Test PointFactory class', () => {
             steps: 9,
             tcxLink: '',
         };
-        const activity = ActivityFactory.getActivityFromApi(apiActivity);
+        const activity = Activity.fromApi(apiActivity);
         expect(activity instanceof Activity).toBeTruthy();
     });
 });

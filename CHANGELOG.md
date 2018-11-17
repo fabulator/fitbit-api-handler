@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file.
 
 
+## [2.0.0] - 2018-11-17
+### Changed
+- Migrate to typescript
+- Move factories to its models as static methods
+
+
 ## [1.2.0] - 2018-08-10
 ### Added
 - Add sleep endpoint

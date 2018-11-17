@@ -1,5 +1,4 @@
-// @flow
-import type { ApiResponseType } from 'rest-api-handler/src';
+import { ApiResponseType } from 'rest-api-handler';
 import FitbitException from './FitbitException';
 
 type Error = {
@@ -15,21 +14,30 @@ type ErrorResponse = ApiResponseType<{
 }>;
 
 export default class FitbitApiException extends FitbitException {
-    response: ApiResponseType<*>;
-    request: Request;
+    private response: ApiResponseType<any>;
 
-    constructor(response: ApiResponseType<*>, request: Request) {
+    private request: Request;
+
+    public constructor(response: ApiResponseType<any>, request: Request) {
         const { data } = response;
-        super(data.errors ? data.errors.map(item => item.message).join(', ') : JSON.stringify(data));
+        super(data.errors ? data.errors.map((item: any) => item.message).join(', ') : JSON.stringify(data));
         this.response = response;
         this.request = request;
     }
 
-    getErrors(): Array<Error> {
+    public getErrors(): Array<Error> {
         return this.response.data.errors;
     }
 
-    hasError(error: string): boolean {
+    public hasError(error: string): boolean {
         return typeof this.getErrors().find(item => item.errorType === error) === 'string';
+    }
+
+    public getResponse(): ApiResponseType<any> {
+        return this.response;
+    }
+
+    public getRequest(): Request {
+        return this.request;
     }
 }

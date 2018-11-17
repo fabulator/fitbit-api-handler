@@ -74,7 +74,7 @@ To create activity, use ActivityFactory
 ```javascript
 const { DateTime, Duration } = require('luxon');
 const math = require('mathjs');
-const { ActivityFactory, ACTIVITY_TYPES } = require('fitbit-api-handler');
+const { Activity, ACTIVITY_TYPES } = require('fitbit-api-handler');
 
 const start = DateTime.fromObject({
     year: 2018,
@@ -84,7 +84,7 @@ const start = DateTime.fromObject({
     minute: 2,
 });
 
-const activity = ActivityFactory.get(
+const activity = Activity.get(
     ACTIVITY_TYPES.RUNNING,
     start,
     Duration.fromObject({ minutes: 3 }),

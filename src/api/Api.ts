@@ -1,15 +1,14 @@
-// @flow
+/* eslint-disable max-lines */
 import {
     Api as ApiBase,
     DefaultResponseProcessor,
-    type ApiResponseType,
-} from 'rest-api-handler/src';
-import queryString from 'query-string';
+    ApiResponseType,
+} from 'rest-api-handler';
+import { parseUrl } from 'query-string';
 import { DateTime } from 'luxon';
-import { FitbitApiException } from './../exceptions';
-import { ActivityFactory } from './../factories';
-import { Activity } from './../models';
-import type {
+import { FitbitApiException } from '../exceptions';
+import { Activity } from '../models';
+import {
     IntradayResource,
     ApiToken,
     ActivityFilters,
@@ -18,7 +17,7 @@ import type {
     Scope,
     SubscriptionCollection,
     DateFilters,
-} from './../types';
+} from '../types';
 import ResponseProcessor from './ResponseProcessor';
 
 type ResponseType = 'code' | 'token';
@@ -32,12 +31,12 @@ type Pagination = {
     offset: number,
     previous: string,
     sort: string,
-}
+};
 
 export type ActivityResponse = {
     activities: Array<Activity>,
     pagination: Pagination,
-}
+};
 
 export type SleepProcessedResponse = {
     sleep: Array<{
@@ -57,7 +56,7 @@ export type SleepProcessedResponse = {
         type: string,
     }>,
     pagination: Pagination,
-}
+};
 
 export type IntradayResponse = {
     total: number,
@@ -65,7 +64,7 @@ export type IntradayResponse = {
         time: DateTime,
         value: number,
     }>,
-}
+};
 
 export type SubscriptionResponse = {
     collectionType: string,
@@ -73,7 +72,7 @@ export type SubscriptionResponse = {
     ownerType: string,
     subscriberId: string,
     subscriptionId: string,
-}
+};
 
 export type ActivitySummaryResponse = {
     activities: Array<Activity>,
@@ -97,13 +96,13 @@ export type ActivitySummaryResponse = {
         steps: number,
         veryActiveMinutes: number,
     },
-}
+};
 
 export type Token = ApiToken & {
     expireDate: string,
 };
 
-function base64Encode(string: string) {
+function base64Encode(string: string): string {
     if (typeof btoa !== 'undefined') {
         // eslint-disable-next-line no-undef
         return btoa(string);
@@ -112,16 +111,20 @@ function base64Encode(string: string) {
     return Buffer.from(string).toString('base64');
 }
 
-export default class Api extends ApiBase<ApiResponseType<*>> {
-    clientId: string;
-    secret: string;
+export default class Api extends ApiBase<ApiResponseType<any>> {
+    private clientId: string;
 
-    accessToken: ?string;
-    dateFormat = 'yyyy-MM-dd';
-    timeFormat = 'HH:mm';
-    dateTimeFormat = `${this.dateFormat}'T'${this.timeFormat}`;
+    private secret: string;
 
-    constructor(clientId: string, secret: string) {
+    private accessToken: string | null = null;
+
+    private dateFormat = 'yyyy-MM-dd';
+
+    private timeFormat = 'HH:mm';
+
+    private dateTimeFormat = `${this.dateFormat}'T'${this.timeFormat}`;
+
+    public constructor(clientId: string, secret: string) {
         super('https://api.fitbit.com', [
             new DefaultResponseProcessor(FitbitApiException),
             new ResponseProcessor(),
@@ -130,24 +133,24 @@ export default class Api extends ApiBase<ApiResponseType<*>> {
         this.secret = secret;
     }
 
-    getDateString(date: DateTime) {
+    private getDateString(date: DateTime) {
         return date.toFormat(this.dateFormat);
     }
 
-    getDateTimeString(date: DateTime) {
+    private getDateTimeString(date: DateTime) {
         return date.toFormat(this.dateTimeFormat);
     }
 
-    setAccessToken(token: string) {
+    public setAccessToken(token: string) {
         this.accessToken = token;
         this.setDefaultHeader('Authorization', `Bearer ${token}`);
     }
 
-    getAccessToken(): ?string {
+    public getAccessToken(): string | null {
         return this.accessToken;
     }
 
-    getLoginUrl(
+    public getLoginUrl(
         redirectUri: string,
         scope: Array<Scope>,
         {
@@ -157,10 +160,10 @@ export default class Api extends ApiBase<ApiResponseType<*>> {
             state,
         }: {
             responseType: ResponseType,
-            prompt: ?Prompt,
-            expiresIn: ?number,
-            state: ?string,
-        } = {},
+            prompt?: Prompt,
+            expiresIn?: number,
+            state?: string,
+        },
     ): string {
         return `https://www.fitbit.com/oauth2/authorize${ApiBase.convertParametersToUrl({
             response_type: responseType,
@@ -173,7 +176,7 @@ export default class Api extends ApiBase<ApiResponseType<*>> {
         })}`;
     }
 
-    async requestToken(parameters: Object): Promise<Token> {
+    public async requestToken(parameters: Object): Promise<Token> {
         const response = await this.request(
             `oauth2/token${ApiBase.convertParametersToUrl(parameters)}`,
             'POST',
@@ -192,7 +195,7 @@ export default class Api extends ApiBase<ApiResponseType<*>> {
         };
     }
 
-    requestAccessToken(code: string, redirectUri: string, expiresIn: ?number, state: ?string): Promise<ApiToken> {
+    public requestAccessToken(code: string, redirectUri: string, expiresIn?: number, state?: string): Promise<ApiToken> {
         return this.requestToken({
             code,
             grant_type: 'authorization_code',
@@ -203,7 +206,7 @@ export default class Api extends ApiBase<ApiResponseType<*>> {
         });
     }
 
-    extendAccessToken(token: string, expiresIn: ?number): Promise<ApiToken> {
+    public extendAccessToken(token: string, expiresIn?: number): Promise<ApiToken> {
         return this.requestToken({
             refresh_token: token,
             grant_type: 'refresh_token',
@@ -211,14 +214,14 @@ export default class Api extends ApiBase<ApiResponseType<*>> {
         });
     }
 
-    getApiUrl(namespace: string, userId: ?string, version: string = '1', file: string = 'json'): string {
+    private getApiUrl(namespace: string, userId?: string, version = '1', file = 'json'): string {
         return `${version}/user/${userId || '-'}/${namespace}.${file}`;
     }
 
-    async getIntradayData(
+    public async getIntradayData(
         resource: IntradayResource,
         from: DateTime,
-        to: ?DateTime,
+        to?: DateTime,
         detail: DetailLevel = '1min',
     ): Promise<IntradayResponse> {
         const until = to || from.endOf('day');
@@ -239,18 +242,19 @@ export default class Api extends ApiBase<ApiResponseType<*>> {
         };
     }
 
-    async getActivitySummary(date: DateTime | string, userId: ?string): Promise<ActivitySummaryResponse> {
+    public async getActivitySummary(date: DateTime | string, userId?: string): Promise<ActivitySummaryResponse> {
         const url = this.getApiUrl(`activities/date/${typeof date === 'string' ? date : date.toFormat(this.dateFormat)}`, userId);
         const { data } = await this.get(url);
         return {
             ...data,
-            activities: data.activities.map((activity) => {
-                return ActivityFactory.getActivityFromApi(activity);
+            activities: data.activities.map((activity: ApiActivity) => {
+                return Activity.fromApi(activity);
             }),
         };
     }
 
-    processDateFilters(filters: DateFilters) {
+    // eslint-disable-next-line complexity
+    private processDateFilters(filters: DateFilters) {
         const {
             afterDate,
             beforeDate,
@@ -267,7 +271,7 @@ export default class Api extends ApiBase<ApiResponseType<*>> {
         };
     }
 
-    async getSleeps(filters: DateFilters): Promise<SleepProcessedResponse> {
+    public async getSleeps(filters: DateFilters): Promise<SleepProcessedResponse> {
         const { data } = await this.get(
             this.getApiUrl('sleep/list', undefined, '1.2'),
             this.processDateFilters(filters),
@@ -285,24 +289,24 @@ export default class Api extends ApiBase<ApiResponseType<*>> {
         };
     }
 
-    async getActivity(activityId: number): Promise<Activity> {
-        const { data } = await this.get(this.getApiUrl(`activities/${activityId}`, null, '1.1'));
-        return ActivityFactory.getActivityFromApi(data.activityLog);
+    public async getActivity(activityId: number): Promise<Activity> {
+        const { data } = await this.get(this.getApiUrl(`activities/${activityId}`, undefined, '1.1'));
+        return Activity.fromApi(data.activityLog);
     }
 
     // eslint-disable-next-line complexity
-    async getActivities(filters: ActivityFilters): Promise<ActivityResponse> {
+    public async getActivities(filters: ActivityFilters): Promise<ActivityResponse> {
         const { data } = await this.get(this.getApiUrl('activities/list'), this.processDateFilters(filters));
 
         return {
             ...data,
             activities: data.activities.map((activity: ApiActivity) => {
-                return ActivityFactory.getActivityFromApi(activity);
+                return Activity.fromApi(activity);
             }),
         };
     }
 
-    async getActivitiesBetweenDates(from: DateTime, to: DateTime): Promise<ActivityResponse> {
+    public async getActivitiesBetweenDates(from: DateTime, to: DateTime): Promise<ActivityResponse> {
         const data = await this.getActivities({
             afterDate: from,
         });
@@ -314,7 +318,7 @@ export default class Api extends ApiBase<ApiResponseType<*>> {
         };
     }
 
-    async processActivities(
+    public async processActivities(
         filter: ActivityFilters,
         processor: (activity: Activity) => Promise<Activity>,
     ): Promise<Array<Activity>> {
@@ -325,7 +329,8 @@ export default class Api extends ApiBase<ApiResponseType<*>> {
         });
 
         if (pagination.next) {
-            const data: Object = queryString.parseUrl(pagination.next).query;
+            const data: Object = parseUrl(pagination.next).query;
+            // @ts-ignore
             processorPromises.push(...await this.processActivities(data, processor));
         }
 
@@ -338,7 +343,7 @@ export default class Api extends ApiBase<ApiResponseType<*>> {
      * @param activity
      * @returns {Promise<Activity>}
      */
-    async logActivity(activity: Activity): Promise<Activity> {
+    public async logActivity(activity: Activity): Promise<Activity> {
         const calories = activity.getCalories();
         const distance = activity.getDistance();
 
@@ -351,16 +356,16 @@ export default class Api extends ApiBase<ApiResponseType<*>> {
             ...(distance != null ? { distance: distance.toNumber('km') } : {}),
         };
 
-        const { data } = await this.post(this.getApiUrl('activities'), parameters, Api.FORMATS.FORM_DATA_FORMAT);
+        const { data } = await this.post(this.getApiUrl('activities'), parameters, Api.FORMATS.FORM_DATA);
 
-        return ActivityFactory.getActivityFromApi(data.activityLog);
+        return Activity.fromApi(data.activityLog);
     }
 
-    async requestSubscription(
+    public async requestSubscription(
         method: 'POST' | 'DELETE' | 'GET',
-        collection: ?SubscriptionCollection,
-        id: ?string,
-        subscriberId: ?number,
+        collection?: SubscriptionCollection,
+        id?: string,
+        subscriberId?: number,
     ): Promise<Object> {
         const { data } = await this.request(
             this.getApiUrl(`${collection ? `${collection}/` : ''}apiSubscriptions${id ? `/${id}` : ''}`),
@@ -381,8 +386,8 @@ export default class Api extends ApiBase<ApiResponseType<*>> {
      * @param subscriberId
      * @returns {Promise<SubscriptionResponse>}
      */
-    async addSubscription(id: string, collection: ?SubscriptionCollection, subscriberId: ?number): Promise<SubscriptionResponse> {
-        const data = await this.requestSubscription('POST', collection, id, subscriberId);
+    public async addSubscription(id: string, collection?: SubscriptionCollection, subscriberId?: number): Promise<SubscriptionResponse> {
+        const data: any = await this.requestSubscription('POST', collection, id, subscriberId);
 
         return {
             ...data,
@@ -399,7 +404,7 @@ export default class Api extends ApiBase<ApiResponseType<*>> {
      * @param subscriberId
      * @returns {Promise<Object>}
      */
-    deleteSubscription(id: string, collection: ?SubscriptionCollection, subscriberId: ?number): Promise<Object> {
+    public deleteSubscription(id: string, collection?: SubscriptionCollection, subscriberId?: number): Promise<Object> {
         return this.requestSubscription('DELETE', collection, id, subscriberId);
     }
 
@@ -409,8 +414,8 @@ export default class Api extends ApiBase<ApiResponseType<*>> {
      * @param collection
      * @returns {Promise<void>}
      */
-    async getSubscriptions(collection: ?SubscriptionCollection): Promise<Array<SubscriptionResponse>> {
-        const data = await this.requestSubscription('GET', collection);
+    public async getSubscriptions(collection?: SubscriptionCollection): Promise<Array<SubscriptionResponse>> {
+        const data: any = await this.requestSubscription('GET', collection);
         return data.apiSubscriptions;
     }
 }

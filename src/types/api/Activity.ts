@@ -1,9 +1,8 @@
-// @flow
-import type { ActivityType } from './../ActivityType';
+import { ActivityType } from '../ActivityType';
 
 export type Activity = {
     activeDuration?: number,
-    activityLevel?: Array<*>,
+    activityLevel?: Array<any>,
     activityName?: string,
     name?: string,
     activityId?: ActivityType,
@@ -18,7 +17,7 @@ export type Activity = {
     duration: number,
     elevationGain: number,
     heartRateLink: string,
-    heartRateZones: Array<*>,
+    heartRateZones: Array<any>,
     lastModified: string,
     logId: number,
     logType: string,

@@ -1,19 +1,16 @@
-// @flow
-import type { ProcessedResponse } from 'rest-api-handler/src';
-import { FitbitApiException } from './../exceptions';
+import { ApiResponseType } from 'rest-api-handler';
+import { FitbitApiException } from '../exceptions';
 
 function tryParseJson(json: string): Object | string {
     try {
         return JSON.parse(json);
-    } catch (error) {
+    } catch (exception) {
         return json;
     }
 }
 
 export default class ResponseProcessor {
-    processResponse: (response: ProcessedResponse, request: Request) => Promise<ProcessedResponse>;
-
-    async processResponse(response: ProcessedResponse, request: Request): Promise<ProcessedResponse> {
+    public async processResponse(response: ApiResponseType<any>, request: Request): Promise<ApiResponseType<any>> {
         const { data } = response;
         const processedData = typeof data === 'string' ? tryParseJson(data) : data;
 

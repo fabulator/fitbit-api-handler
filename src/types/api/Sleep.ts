@@ -1,4 +1,3 @@
-// @flow
 export type Sleep = {
     dateOfSleep: string,
     duration: number,

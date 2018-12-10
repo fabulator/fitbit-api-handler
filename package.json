@@ -36,7 +36,7 @@
     "@types/query-string": "^6.1.1"
   },
   "dependencies": {
-    "luxon": "^1.7.1",
+    "luxon": "^1.8.2",
     "mathjs": "^5.2.3",
     "query-string": "^6.2.0",
     "rest-api-handler": "^2.0.0"

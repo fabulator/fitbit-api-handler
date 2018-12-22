@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 
 
+## [2.1.0-beta.1] 2018-12-22
+### Changed
+- Use fitness models dependency for Activity model.
+
 ## [2.0.0] - 2018-11-17
 ### Changed
 - Migrate to typescript

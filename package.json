@@ -23,22 +23,29 @@
     "test": "jest",
     "test:build": "npm run test -- --config jest.config.build.js",
     "build": "rollup --config ./rollup.config.js",
+    "develop": "tsc --emitDeclarationOnly false --watch",
     "test:all": "npm run lint && npm run tsc && npm run test",
-    "prepublishOnly": "npm run build && npm run tsc && npm run test:build"
+    "prepublishOnly": "npm run build && npm run tsc && npm run test:build",
+    "release": "semantic-release"
   },
   "devDependencies": {
     "@socifi/babel-config": "^0.6.0",
-    "@socifi/eslint-config": "^2.0.1",
+    "@socifi/browserslist-config": "^0.1.0",
+    "@socifi/commitlint-config": "^1.0.0",
+    "@socifi/eslint-config": "^2.5.0",
     "@socifi/jest-config": "^2.1.0",
     "@socifi/rollup-config": "^2.0.1",
     "@types/luxon": "^1.4.1",
     "@types/mathjs": "^4.4.3",
-    "@types/query-string": "^6.1.1"
+    "@types/query-string": "^6.1.1",
+    "husky": "^1.2.1",
+    "semantic-release-config-fabulator": "^1.0.3"
   },
   "dependencies": {
+    "fitness-models": "^0.2.0",
     "luxon": "^1.7.1",
     "mathjs": "^5.2.3",
     "query-string": "^6.2.0",
-    "rest-api-handler": "^2.0.0"
+    "rest-api-handler": "^2.1.0"
   }
 }

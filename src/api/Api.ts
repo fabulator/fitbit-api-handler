@@ -34,7 +34,7 @@ type Pagination = {
 };
 
 export type ActivityResponse = {
-    activities: Array<Activity>,
+    activities: Array<Activity<number, ApiActivity>>,
     pagination: Pagination,
 };
 
@@ -154,16 +154,16 @@ export default class Api extends ApiBase<ApiResponseType<any>> {
         redirectUri: string,
         scope: Array<Scope>,
         {
-            responseType = 'code',
+            responseType,
             prompt,
             expiresIn,
             state,
         }: {
-            responseType: ResponseType,
+            responseType?: ResponseType,
             prompt?: Prompt,
             expiresIn?: number,
             state?: string,
-        },
+        } = { responseType: 'code' },
     ): string {
         return `https://www.fitbit.com/oauth2/authorize${ApiBase.convertParametersToUrl({
             response_type: responseType,
@@ -214,7 +214,7 @@ export default class Api extends ApiBase<ApiResponseType<any>> {
         });
     }
 
-    private getApiUrl(namespace: string, userId?: string, version = '1', file = 'json'): string {
+    public getApiUrl(namespace: string, userId?: string, version = '1', file = 'json'): string {
         return `${version}/user/${userId || '-'}/${namespace}.${file}`;
     }
 
@@ -289,7 +289,7 @@ export default class Api extends ApiBase<ApiResponseType<any>> {
         };
     }
 
-    public async getActivity(activityId: number): Promise<Activity> {
+    public async getActivity(activityId: number): Promise<Activity<number, ApiActivity>> {
         const { data } = await this.get(this.getApiUrl(`activities/${activityId}`, undefined, '1.1'));
         return Activity.fromApi(data.activityLog);
     }
@@ -320,7 +320,7 @@ export default class Api extends ApiBase<ApiResponseType<any>> {
 
     public async processActivities(
         filter: ActivityFilters,
-        processor: (activity: Activity) => Promise<Activity>,
+        processor: (activity: Activity<number, ApiActivity>) => Promise<Activity>,
     ): Promise<Array<Activity>> {
         const { activities, pagination } = await this.getActivities(filter);
 
@@ -343,7 +343,7 @@ export default class Api extends ApiBase<ApiResponseType<any>> {
      * @param activity
      * @returns {Promise<Activity>}
      */
-    public async logActivity(activity: Activity): Promise<Activity> {
+    public async logActivity(activity: Activity): Promise<Activity<number, ApiActivity>> {
         const calories = activity.getCalories();
         const distance = activity.getDistance();
 

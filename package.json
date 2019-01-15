@@ -42,7 +42,7 @@
     "semantic-release-config-fabulator": "^1.0.3"
   },
   "dependencies": {
-    "fitness-models": "^0.2.0",
+    "fitness-models": "^0.2.1",
     "luxon": "^1.7.1",
     "mathjs": "^5.2.3",
     "query-string": "^6.2.0",

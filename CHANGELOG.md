@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 
 
+## [2.1.0-beta.2] 2019-01-15
+### Changed
+- Update fitnes models library
+
 ## [2.1.0-beta.1] 2018-12-22
 ### Changed
 - Use fitness models dependency for Activity model.

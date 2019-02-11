@@ -31,12 +31,12 @@
     "@socifi/eslint-config": "^2.6.1",
     "@socifi/jest-config": "^2.2.0",
     "@socifi/rollup-config": "^2.1.0",
-    "@types/luxon": "^1.10.2",
+    "@types/luxon": "^1.11.0",
     "@types/mathjs": "^4.4.5",
     "@types/query-string": "^6.2.0"
   },
   "dependencies": {
-    "luxon": "^1.11.0",
+    "luxon": "^1.11.2",
     "mathjs": "^5.4.2",
     "query-string": "^6.2.0",
     "rest-api-handler": "^2.1.0"

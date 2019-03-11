@@ -37,7 +37,7 @@
   },
   "dependencies": {
     "luxon": "^1.11.4",
-    "mathjs": "^5.6.0",
+    "mathjs": "^5.7.0",
     "query-string": "^6.3.0",
     "rest-api-handler": "^2.1.0"
   }

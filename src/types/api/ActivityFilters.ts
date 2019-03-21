@@ -1,8 +1,8 @@
 import { DateTime } from 'luxon';
 
-export type ActivityFilters = {
+export interface ActivityFilters {
     beforeDate?: (DateTime | string),
     afterDate?: (DateTime | string),
     limit?: number,
     offset?: number,
-};
+}

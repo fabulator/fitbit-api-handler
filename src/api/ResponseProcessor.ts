@@ -1,7 +1,7 @@
 import { ApiResponseType } from 'rest-api-handler';
 import { FitbitApiException } from '../exceptions';
 
-function tryParseJson(json: string): Object | string {
+function tryParseJson(json: string): Record<string, any> | string {
     try {
         return JSON.parse(json);
     } catch (exception) {

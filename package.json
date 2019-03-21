@@ -1,44 +1,50 @@
 {
-  "name": "fitbit-api-handler",
-  "version": "2.0.0",
-  "description": "Unofficial handler for Fitbit API",
-  "main": "dist/index.js",
-  "jsnext:main": "dist/index.esm.js",
-  "module": "dist/index.esm.js",
-  "types": "dist/index.d.ts",
-  "repository": {
-    "type": "git",
-    "url": "git+ssh://git@github.com/fabulator/fitbit-api-handler.git"
-  },
-  "bugs": {
-    "url": "https://github.com/fabulator/fitbit-api-handler/issues"
-  },
-  "homepage": "https://github.com/fabulator/fitbit-api-handler",
-  "author": "Michal Ozogán <michal@ozogan.eu>",
-  "license": "Apache-2.0",
-  "scripts": {
-    "lint": "eslint --ext .ts ./src ./tests",
-    "lint:export": "npm run lint -- -o ./tests_results/checkstyle/js-checkstyle.xml -f checkstyle",
-    "tsc": "tsc",
-    "test": "jest",
-    "test:build": "npm run test -- --config jest.config.build.js",
-    "build": "rollup --config ./rollup.config.js",
-    "test:all": "npm run lint && npm run tsc && npm run test",
-    "prepublishOnly": "npm run build && npm run tsc && npm run test:build"
-  },
-  "devDependencies": {
-    "@socifi/babel-config": "^0.6.0",
-    "@socifi/eslint-config": "^2.6.1",
-    "@socifi/jest-config": "^2.3.1",
-    "@socifi/rollup-config": "^2.1.0",
-    "@types/luxon": "^1.11.1",
-    "@types/mathjs": "^5.0.1",
-    "@types/query-string": "^6.2.0"
-  },
-  "dependencies": {
-    "luxon": "^1.11.4",
-    "mathjs": "^5.7.0",
-    "query-string": "^6.4.0",
-    "rest-api-handler": "^2.1.0"
-  }
+    "name": "fitbit-api-handler",
+    "version": "2.1.0-beta.4",
+    "description": "Unofficial handler for Fitbit API",
+    "main": "dist/index.js",
+    "jsnext:main": "dist/index.esm.js",
+    "module": "dist/index.esm.js",
+    "types": "dist/index.d.ts",
+    "repository": {
+        "type": "git",
+        "url": "git+ssh://git@github.com/fabulator/fitbit-api-handler.git"
+    },
+    "bugs": {
+        "url": "https://github.com/fabulator/fitbit-api-handler/issues"
+    },
+    "homepage": "https://github.com/fabulator/fitbit-api-handler",
+    "author": "Michal Ozogán <michal@ozogan.eu>",
+    "license": "Apache-2.0",
+    "scripts": {
+        "lint": "eslint --ext .ts ./src ./tests",
+        "lint:export": "npm run lint -- -o ./tests_results/checkstyle/js-checkstyle.xml -f checkstyle",
+        "tsc": "tsc",
+        "test": "jest",
+        "test:build": "npm run test -- --config jest.config.build.js",
+        "build": "rollup --config ./rollup.config.js",
+        "develop": "tsc --emitDeclarationOnly false --watch",
+        "test:all": "npm run lint && npm run tsc && npm run test",
+        "prepublishOnly": "npm run build && npm run tsc && npm run test:build",
+        "release": "semantic-release"
+    },
+    "devDependencies": {
+        "@socifi/babel-config": "^0.6.1",
+        "@socifi/browserslist-config": "^0.1.0",
+        "@socifi/commitlint-config": "^1.0.0",
+        "@socifi/eslint-config": "^2.7.1",
+        "@socifi/jest-config": "^2.3.1",
+        "@socifi/rollup-config": "^2.0.1",
+        "husky": "^1.3.1",
+        "semantic-release-config-fabulator": "^1.0.3"
+    },
+    "dependencies": {
+        "@types/luxon": "^1.11.1",
+        "@types/mathjs": "^5.0.1",
+        "fitness-models": "^0.2.1",
+        "luxon": "^1.11.4",
+        "mathjs": "^5.8.0",
+        "query-string": "^6.4.0",
+        "rest-api-handler": "^2.1.0"
+    }
 }

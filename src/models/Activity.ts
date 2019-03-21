@@ -1,75 +1,41 @@
 import { DateTime, Duration } from 'luxon';
 import { unit, Unit } from 'mathjs';
+import { Workout, TYPES } from 'fitness-models';
 import { ApiActivity, ActivityType } from '../types';
 import { FitbitException } from '../exceptions';
 
-type Constructing = {
-    start: DateTime,
-    duration: Duration,
+interface Constructor<Id, ApiSource> extends TYPES.WorkoutConstructor {
     typeId: ActivityType,
-    id?: number,
+    id: Id,
     typeName?: string,
-    heartRateAvg?: number,
-    calories?: number,
-    distance?: Unit,
-    steps?: number,
     tcxLink?: string,
-    source?: ApiActivity,
-};
+    steps?: number,
+    source: ApiSource,
+}
 
-export default class Activity {
-    private start: DateTime;
+export default class Activity<Id extends (number | undefined) = any, ApiSource extends (ApiActivity | undefined) = any> extends Workout {
+    protected typeId: ActivityType;
 
-    private duration: Duration;
+    protected typeName?: string;
 
-    private typeId: ActivityType;
+    protected id?: number;
 
-    private id: number | null;
+    protected steps?: number;
 
-    private typeName: string | null;
+    protected tcxLink?: string;
 
-    private heartRateAvg: number | null;
+    protected source?: ApiActivity;
 
-    private calories: number | null;
-
-    private distance: Unit | null;
-
-    private steps: number | null;
-
-    private tcxLink: string | null;
-
-    private source: ApiActivity | null;
-
-
-    // eslint-disable-next-line complexity
-    public constructor({
-        start,
-        id,
-        duration,
-        typeName,
-        typeId,
-        heartRateAvg,
-        calories,
-        distance,
-        steps,
-        tcxLink,
-        source,
-    }: Constructing) {
-        this.start = start;
-        this.duration = duration;
-        this.typeId = typeId;
-
-        this.id = id != null ? id : null;
-        this.typeName = typeName != null ? typeName : null;
-        this.heartRateAvg = heartRateAvg != null ? heartRateAvg : null;
-        this.calories = calories != null ? calories : null;
-        this.distance = distance != null ? distance : null;
-        this.steps = steps != null ? steps : null;
-        this.tcxLink = tcxLink != null ? tcxLink : null;
-        this.source = source != null ? source : null;
+    public constructor(options: Constructor<Id, ApiSource>) {
+        super(options);
+        this.typeId = options.typeId;
+        this.id = options.id;
+        this.steps = options.steps;
+        this.tcxLink = options.tcxLink;
+        this.source = options.source;
     }
 
-    public static fromApi(activity: ApiActivity): Activity {
+    public static fromApi(activity: ApiActivity): Activity<number, ApiActivity> {
         const { distance } = activity;
 
         const activityId = activity.activityTypeId || activity.activityId;
@@ -83,7 +49,7 @@ export default class Activity {
             duration: Duration.fromMillis(activity.duration),
             typeName: activity.activityName || activity.name,
             typeId: activityId,
-            heartRateAvg: activity.averageHeartRate,
+            avgHeartRate: activity.averageHeartRate,
             calories: activity.calories,
             steps: activity.steps,
             tcxLink: activity.tcxLink,
@@ -93,96 +59,61 @@ export default class Activity {
     }
 
     // eslint-disable-next-line max-params
-    public static get(typeId: number, start: DateTime, duration: Duration, distance?: Unit, calories?: number): Activity {
+    public static get(
+        typeId: ActivityType,
+        start: DateTime,
+        duration: Duration,
+        distance?: Unit,
+        calories?: number,
+    ): Activity<undefined, undefined> {
         return new Activity({
             calories,
             typeId,
             start,
             duration,
             distance,
+            id: undefined,
+            source: undefined,
         });
     }
 
-    public getId(): number | null {
+    protected clone(extension: Partial<Constructor<number | undefined, ApiSource>>): any {
+        // @ts-ignore
+        return new Activity({
+            ...this.toObject(),
+            ...extension,
+        });
+    }
+
+    public getId(): number | undefined {
         return this.id;
     }
 
-    public setId(id: number | null): this {
-        this.id = id;
-        return this;
+    public setId(id: number): Activity<number, ApiActivity>
+
+    public setId(id: undefined): Activity<undefined, ApiActivity>
+
+    public setId(id: number | undefined) {
+        return this.clone({ id });
     }
 
-    public getTypeId(): ActivityType {
+    public getTypeId() {
         return this.typeId;
     }
 
-    public setTypeId(typeId: ActivityType): this {
-        this.typeId = typeId;
-        return this;
+    public getTypeName() {
+        return this.typeName || 'unknown';
     }
 
-    public getTypeName(): string | null {
-        return this.typeName;
-    }
-
-    public getStart(): DateTime {
-        return this.start;
-    }
-
-    public setStart(start: DateTime): this {
-        this.start = start;
-        return this;
-    }
-
-    public getEnd(): DateTime {
-        return this.getStart().plus(this.getDuration());
-    }
-
-    public getDuration(): Duration {
-        return this.duration;
-    }
-
-    public setDuration(duration: Duration): this {
-        this.duration = duration;
-        return this;
-    }
-
-    public getDistance(): Unit | null {
-        return this.distance;
-    }
-
-    public setDistance(distance: Unit | null): this {
-        this.distance = distance;
-        return this;
-    }
-
-    public getCalories(): number | null {
-        return this.calories;
-    }
-
-    public setCalories(calories: number | null): this {
-        this.calories = calories;
-        return this;
-    }
-
-    public getAvgHeartRate(): number | null {
-        return this.heartRateAvg;
-    }
-
-    public setAvgHeartRate(hr: number | null): this {
-        this.heartRateAvg = hr;
-        return this;
-    }
-
-    public getSource(): ApiActivity | null {
+    public getSource() {
         return this.source;
     }
 
-    public getSteps(): number | null {
+    public getSteps(): number | undefined {
         return this.steps;
     }
 
-    public getTcxLink(): string | null {
+    public getTcxLink(): string | undefined {
         return this.tcxLink;
     }
 
@@ -191,9 +122,9 @@ export default class Activity {
 
         return [
             `Workout ${this.getId() || ''}`,
-            `type: ${this.getTypeName() || 'uknown'}`,
+            `type: ${this.getTypeName()}`,
             `start: ${this.getStart().toFormat('yyyy-MM-dd HH:mm')}`,
-            distance !== null ? `distance: ${Math.round(distance.toNumber('km') * 10) / 10}km` : null,
+            distance != null ? `distance: ${Math.round(distance.toNumber('km') * 10) / 10}km` : null,
             `duration: ${Math.round(this.getDuration().as('minutes'))}min`,
         ].filter(item => item !== null).join('; ');
     }

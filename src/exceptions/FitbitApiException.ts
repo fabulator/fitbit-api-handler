@@ -1,15 +1,15 @@
 import { ApiResponseType } from 'rest-api-handler';
 import FitbitException from './FitbitException';
 
-type Error = {
+interface Error {
     errorType: string,
     fieldName: string,
     message: string,
-};
+}
 
 // eslint-disable-next-line no-unused-vars
 type ErrorResponse = ApiResponseType<{
-    errors: Array<Error>,
+    errors: Error[],
     success: false,
 }>;
 
@@ -25,12 +25,12 @@ export default class FitbitApiException extends FitbitException {
         this.request = request;
     }
 
-    public getErrors(): Array<Error> {
+    public getErrors(): Error[] {
         return this.response.data.errors;
     }
 
     public hasError(error: string): boolean {
-        return typeof this.getErrors().find(item => item.errorType === error) === 'string';
+        return !!this.getErrors().find(item => item.errorType === error);
     }
 
     public getResponse(): ApiResponseType<any> {

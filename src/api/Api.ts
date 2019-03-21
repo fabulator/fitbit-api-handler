@@ -24,28 +24,28 @@ type ResponseType = 'code' | 'token';
 type Prompt = 'consent' | 'login' | 'login consent' | 'none';
 type DetailLevel = '1sec' | '1min' | '15min';
 
-type Pagination = {
+interface Pagination {
     afterDate?: string,
     limit: number,
     next: string,
     offset: number,
     previous: string,
     sort: string,
-};
+}
 
-export type ActivityResponse = {
-    activities: Array<Activity>,
+export interface ActivityResponse {
+    activities: Activity<number, ApiActivity>[],
     pagination: Pagination,
-};
+}
 
-export type SleepProcessedResponse = {
-    sleep: Array<{
+export interface SleepProcessedResponse {
+    sleep: {
         dateOfSleep: string,
         duration: number,
         efficiency: number,
         endTime: DateTime,
         infoCode: number,
-        levels: Object,
+        levels: Record<string, any>,
         logId: number,
         minutesAfterWakeup: number,
         minutesAsleep: number,
@@ -54,28 +54,28 @@ export type SleepProcessedResponse = {
         startTime: DateTime,
         timeInBed: number,
         type: string,
-    }>,
+    }[],
     pagination: Pagination,
-};
+}
 
-export type IntradayResponse = {
+export interface IntradayResponse {
     total: number,
-    sets: Array<{
+    sets: {
         time: DateTime,
         value: number,
-    }>,
-};
+    }[],
+}
 
-export type SubscriptionResponse = {
+export interface SubscriptionResponse {
     collectionType: string,
     ownerId: string,
     ownerType: string,
     subscriberId: string,
     subscriptionId: string,
-};
+}
 
-export type ActivitySummaryResponse = {
-    activities: Array<Activity>,
+export interface ActivitySummaryResponse {
+    activities: Activity[],
     goals: {
         caloriesOut: number,
         distance: number,
@@ -86,7 +86,7 @@ export type ActivitySummaryResponse = {
         activityCalories: number,
         caloriesBMR: number,
         caloriesOut: number,
-        distances: Array<{ activity: string, distance: number }>,
+        distances: { activity: string, distance: number }[],
         elevation: number,
         fairlyActiveMinutes: number,
         floors: number,
@@ -96,7 +96,7 @@ export type ActivitySummaryResponse = {
         steps: number,
         veryActiveMinutes: number,
     },
-};
+}
 
 export type Token = ApiToken & {
     expireDate: string,
@@ -152,18 +152,18 @@ export default class Api extends ApiBase<ApiResponseType<any>> {
 
     public getLoginUrl(
         redirectUri: string,
-        scope: Array<Scope>,
+        scope: Scope[],
         {
-            responseType = 'code',
+            responseType,
             prompt,
             expiresIn,
             state,
         }: {
-            responseType: ResponseType,
+            responseType?: ResponseType,
             prompt?: Prompt,
             expiresIn?: number,
             state?: string,
-        },
+        } = { responseType: 'code' },
     ): string {
         return `https://www.fitbit.com/oauth2/authorize${ApiBase.convertParametersToUrl({
             response_type: responseType,
@@ -176,7 +176,7 @@ export default class Api extends ApiBase<ApiResponseType<any>> {
         })}`;
     }
 
-    public async requestToken(parameters: Object): Promise<Token> {
+    public async requestToken(parameters: Record<string, any>): Promise<Token> {
         const response = await this.request(
             `oauth2/token${ApiBase.convertParametersToUrl(parameters)}`,
             'POST',
@@ -214,7 +214,7 @@ export default class Api extends ApiBase<ApiResponseType<any>> {
         });
     }
 
-    private getApiUrl(namespace: string, userId?: string, version = '1', file = 'json'): string {
+    public getApiUrl(namespace: string, userId?: string, version = '1', file = 'json'): string {
         return `${version}/user/${userId || '-'}/${namespace}.${file}`;
     }
 
@@ -289,7 +289,7 @@ export default class Api extends ApiBase<ApiResponseType<any>> {
         };
     }
 
-    public async getActivity(activityId: number): Promise<Activity> {
+    public async getActivity(activityId: number): Promise<Activity<number, ApiActivity>> {
         const { data } = await this.get(this.getApiUrl(`activities/${activityId}`, undefined, '1.1'));
         return Activity.fromApi(data.activityLog);
     }
@@ -320,8 +320,8 @@ export default class Api extends ApiBase<ApiResponseType<any>> {
 
     public async processActivities(
         filter: ActivityFilters,
-        processor: (activity: Activity) => Promise<Activity>,
-    ): Promise<Array<Activity>> {
+        processor: (activity: Activity<number, ApiActivity>) => Promise<Activity>,
+    ): Promise<Activity[]> {
         const { activities, pagination } = await this.getActivities(filter);
 
         const processorPromises = activities.map((workout) => {
@@ -329,7 +329,7 @@ export default class Api extends ApiBase<ApiResponseType<any>> {
         });
 
         if (pagination.next) {
-            const data: Object = parseUrl(pagination.next).query;
+            const data: Record<string, any> = parseUrl(pagination.next).query;
             // @ts-ignore
             processorPromises.push(...await this.processActivities(data, processor));
         }
@@ -343,7 +343,7 @@ export default class Api extends ApiBase<ApiResponseType<any>> {
      * @param activity
      * @returns {Promise<Activity>}
      */
-    public async logActivity(activity: Activity): Promise<Activity> {
+    public async logActivity(activity: Activity): Promise<Activity<number, ApiActivity>> {
         const calories = activity.getCalories();
         const distance = activity.getDistance();
 
@@ -366,7 +366,7 @@ export default class Api extends ApiBase<ApiResponseType<any>> {
         collection?: SubscriptionCollection,
         id?: string,
         subscriberId?: number,
-    ): Promise<Object> {
+    ): Promise<Record<string, any>> {
         const { data } = await this.request(
             this.getApiUrl(`${collection ? `${collection}/` : ''}apiSubscriptions${id ? `/${id}` : ''}`),
             method,
@@ -404,7 +404,7 @@ export default class Api extends ApiBase<ApiResponseType<any>> {
      * @param subscriberId
      * @returns {Promise<Object>}
      */
-    public deleteSubscription(id: string, collection?: SubscriptionCollection, subscriberId?: number): Promise<Object> {
+    public deleteSubscription(id: string, collection?: SubscriptionCollection, subscriberId?: number): Promise<Record<string, any>> {
         return this.requestSubscription('DELETE', collection, id, subscriberId);
     }
 
@@ -414,7 +414,7 @@ export default class Api extends ApiBase<ApiResponseType<any>> {
      * @param collection
      * @returns {Promise<void>}
      */
-    public async getSubscriptions(collection?: SubscriptionCollection): Promise<Array<SubscriptionResponse>> {
+    public async getSubscriptions(collection?: SubscriptionCollection): Promise<SubscriptionResponse[]> {
         const data: any = await this.requestSubscription('GET', collection);
         return data.apiSubscriptions;
     }

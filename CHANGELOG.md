@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 
 
+## [2.1.0-beta.3] 2019-03-21
+### Changed
+- Update packages
+
 ## [2.1.0-beta.2] 2019-01-15
 ### Changed
 - Update fitnes models library

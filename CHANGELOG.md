@@ -2,6 +2,13 @@
 All notable changes to this project will be documented in this file.
 
 
+## [2.1.0-beta.4] 2019-03-21
+### Merge branch 'beta' of github.com
+- fabulator/fitbit-api-handler into beta
+
+### Changed
+- Polishing BREAKING
+
 ## [2.1.0-beta.3] 2019-03-21
 ### Changed
 - Update packages

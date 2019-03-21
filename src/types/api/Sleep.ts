@@ -1,10 +1,10 @@
-export type Sleep = {
+export interface Sleep {
     dateOfSleep: string,
     duration: number,
     efficiency: number,
     endTime: string,
     infoCode: number,
-    levels: Object,
+    levels: Record<string, any>,
     logId: number,
     minutesAfterWakeup: number,
     minutesAsleep: number,
@@ -13,4 +13,4 @@ export type Sleep = {
     startTime: string,
     timeInBed: number,
     type: string,
-};
+}

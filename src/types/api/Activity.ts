@@ -1,8 +1,8 @@
 import { ActivityType } from '../ActivityType';
 
-export type Activity = {
+export interface Activity {
     activeDuration?: number,
-    activityLevel?: Array<any>,
+    activityLevel?: any[],
     activityName?: string,
     name?: string,
     activityId?: ActivityType,
@@ -17,17 +17,17 @@ export type Activity = {
     duration: number,
     elevationGain: number,
     heartRateLink: string,
-    heartRateZones: Array<any>,
+    heartRateZones: any[],
     lastModified: string,
     logId: number,
     logType: string,
-    manualValuesSpecified: Object,
+    manualValuesSpecified: Record<string, any>,
     originalDuration: number,
     originalStartTime: string,
     pace: number,
-    source: Object,
+    source: Record<string, any>,
     speed: number,
     startTime: string,
     steps: number,
     tcxLink: string,
-};
+}

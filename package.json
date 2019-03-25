@@ -42,7 +42,7 @@
         "@types/luxon": "^1.11.1",
         "@types/mathjs": "^5.0.1",
         "fitness-models": "^0.2.1",
-        "luxon": "^1.11.4",
+        "luxon": "^1.12.0",
         "mathjs": "^5.8.0",
         "query-string": "^6.4.0",
         "rest-api-handler": "^2.1.0"

@@ -39,10 +39,10 @@
         "semantic-release-config-fabulator": "^1.0.3"
     },
     "dependencies": {
-        "@types/luxon": "^1.11.1",
+        "@types/luxon": "^1.12.0",
         "@types/mathjs": "^5.0.1",
         "fitness-models": "^0.3.1",
-        "luxon": "^1.12.0",
+        "luxon": "^1.12.1",
         "mathjs": "^5.8.0",
         "query-string": "^6.4.2",
         "rest-api-handler": "^2.1.0"

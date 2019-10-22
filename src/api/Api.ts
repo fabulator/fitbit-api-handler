@@ -314,7 +314,7 @@ export default class Api extends ApiBase<ApiResponseType<any>> {
         return {
             ...data,
             // $FlowFixMe
-            activities: data.activities.filter(activity => activity.getStart() <= to),
+            activities: data.activities.filter((activity) => activity.getStart() <= to),
         };
     }
 

@@ -126,6 +126,6 @@ export default class Activity<Id extends (number | undefined) = any, ApiSource e
             `start: ${this.getStart().toFormat('yyyy-MM-dd HH:mm')}`,
             distance != null ? `distance: ${Math.round(distance.toNumber('km') * 10) / 10}km` : null,
             `duration: ${Math.round(this.getDuration().as('minutes'))}min`,
-        ].filter(item => item !== null).join('; ');
+        ].filter((item) => item !== null).join('; ');
     }
 }

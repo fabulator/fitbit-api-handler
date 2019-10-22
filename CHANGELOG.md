@@ -2,6 +2,53 @@
 All notable changes to this project will be documented in this file.
 
 
+## [3.2.0] 2019-10-22
+### Changed
+- [9d44698](https://github.com/fabulator/fitbit-api-handler/commit/9d44698a2770be3428bada1de822e4275db1e261) Update dependencies.
+- [7f21669](https://github.com/fabulator/fitbit-api-handler/commit/7f216696976dad88c402cb1bceb398f9930e48f4) Update dev dependency @socifi/rollup-config to ^2.1.0 
+
+### Other
+- [ecc8e10](https://github.com/fabulator/fitbit-api-handler/commit/ecc8e1091dd4c52c58632c7e01f7e760d2c2cee9) Update dependency husky to ^3.0.9
+- [29d1baa](https://github.com/fabulator/fitbit-api-handler/commit/29d1baaaa4edfab92497c0ec1fd8a1cca9301e19) Update dependency fitness-models to ^0.4.1
+- [1273957](https://github.com/fabulator/fitbit-api-handler/commit/127395715707c84e4e98459a19e4a6f5513d75fd) Update dependency rest-api-handler to ^2.2.0
+- [ac7a5f7](https://github.com/fabulator/fitbit-api-handler/commit/ac7a5f7f73a520a9a3510d7d5a20c3ae57d55243) Update dependency @socifi/babel-config to ^0.7.0
+- [ec9cc53](https://github.com/fabulator/fitbit-api-handler/commit/ec9cc53aec764246d0eccdeb7423552350f960cd) Update dependency mathjs to ^6.2.3
+- [be3a280](https://github.com/fabulator/fitbit-api-handler/commit/be3a2802d53451c6417584123ae7fa3890f75749) Update dependency husky to ^3.0.8
+- [59702d1](https://github.com/fabulator/fitbit-api-handler/commit/59702d1d4d0d618c189eba062ec9f5c3ec0a5dc2) Update dependency luxon to ^1.19.3
+- [186d5a9](https://github.com/fabulator/fitbit-api-handler/commit/186d5a98f39ebc076588eb48bc3fbd8b0958614f) Update dependency husky to ^3.0.7
+- [9c959ca](https://github.com/fabulator/fitbit-api-handler/commit/9c959ca86ad60ed149ec7ff90b22ef98d03ab3f9) Update dependency mathjs to ^6.2.2
+- [3227bc8](https://github.com/fabulator/fitbit-api-handler/commit/3227bc8c4d54be109d983cc5a38a9e79abeb74d6) Update dependency luxon to ^1.19.2
+- [d52ffd2](https://github.com/fabulator/fitbit-api-handler/commit/d52ffd21082dbbcb12bd4f9c31733b392879310e) Update dependency luxon to ^1.17.3
+- [3d6ca98](https://github.com/fabulator/fitbit-api-handler/commit/3d6ca98b0a2d1439b6349332786adb4929aa40de) Update dependency query-string to ^6.8.3
+- [9114492](https://github.com/fabulator/fitbit-api-handler/commit/911449224275bbe2d89d676cda55a70f33b9b877) Update dependency mathjs to ^6.2.1
+- [2fa96d0](https://github.com/fabulator/fitbit-api-handler/commit/2fa96d03dcaaf0cde7d4a15eaf52c1167c31af1d) Update dependency husky to ^3.0.5
+- [ccb8f8e](https://github.com/fabulator/fitbit-api-handler/commit/ccb8f8e0a913cff19b2eb4ef99d7176ef1287561) Update dependency @socifi/babel-config to ^0.6.2
+- [ad5ea9e](https://github.com/fabulator/fitbit-api-handler/commit/ad5ea9e53e05fd281b3ab3966a2b09dd1cad79ca) Update dependency @types/mathjs to ^6.0.2
+- [ee5d7ad](https://github.com/fabulator/fitbit-api-handler/commit/ee5d7ad5471d076b2214a39d36a7e49cfaa21f34) Update dependency query-string to ^6.8.2
+- [7e63726](https://github.com/fabulator/fitbit-api-handler/commit/7e6372671a20de9d47879796701589e095c574b4) Update dependency mathjs to v6 (#67)
+- [9fffbb3](https://github.com/fabulator/fitbit-api-handler/commit/9fffbb3c0d118c524eb31b814d9bb895f2e40941) Update dependency husky to v3 (#70)
+- [784feae](https://github.com/fabulator/fitbit-api-handler/commit/784feaed9ebeaea4e4e54f32a8583c6f335ef32b) Update dependency luxon to ^1.17.2
+- [b529719](https://github.com/fabulator/fitbit-api-handler/commit/b5297192c909ab41a05c3b8030b33ca7e08e6e2a) Update dependency luxon to ^1.17.1
+- [9184584](https://github.com/fabulator/fitbit-api-handler/commit/91845849cee1cd18094aabc38508a09111b0cce1) Update dependency husky to ^2.7.0
+- [3d5e671](https://github.com/fabulator/fitbit-api-handler/commit/3d5e671e5523cbdfbe38c391cc34ef183b44e169) Update dependency query-string to ^6.8.1
+- [76e5b4a](https://github.com/fabulator/fitbit-api-handler/commit/76e5b4a9d42611fd3be8d0a492339e74337320d2) Update dependency husky to ^2.4.1
+- [0ace374](https://github.com/fabulator/fitbit-api-handler/commit/0ace374384a8ea9b2942d35967c5c77c799ad784) Update dependency query-string to ^6.7.0
+- [6d8461f](https://github.com/fabulator/fitbit-api-handler/commit/6d8461f74c552fa47f06fe2c8525d56da32be637) Update dependency luxon to ^1.16.0
+- [e5615ad](https://github.com/fabulator/fitbit-api-handler/commit/e5615adcaa05ebf438eb34c140941b946d38dd12) Update dependency @socifi/eslint-config to ^2.8.0
+- [4dd1f11](https://github.com/fabulator/fitbit-api-handler/commit/4dd1f118cc1f9a6dbae40c805beac13e7664b8a9) Update dependency mathjs to ^5.10.3
+- [cd6a8a4](https://github.com/fabulator/fitbit-api-handler/commit/cd6a8a404fd16d3c73799614241826f999e150fe) Update dependency husky to ^2.3.0
+- [2fd9f1f](https://github.com/fabulator/fitbit-api-handler/commit/2fd9f1f2fb5d81332a3478bb85cbcf9581cf81bd) Update dependency @types/luxon to ^1.13.0
+- [c69b180](https://github.com/fabulator/fitbit-api-handler/commit/c69b1801816f5d6f00c964164ed759c48122adff) Update dependency mathjs to ^5.10.0
+- [a69cb43](https://github.com/fabulator/fitbit-api-handler/commit/a69cb43e8eb002f7ad700a716d67f631911d6f0b) Update dependency luxon to ^1.13.2
+- [aa9d37a](https://github.com/fabulator/fitbit-api-handler/commit/aa9d37aa02632e733bcfe13bb5bab2732230c41b) Update dependency luxon to ^1.13.0
+- [44b7c1d](https://github.com/fabulator/fitbit-api-handler/commit/44b7c1d516824b2c17034632963a91e3a624233b) Update dependency husky to ^2.2.0
+- [b532e93](https://github.com/fabulator/fitbit-api-handler/commit/b532e9313b21a263f93ddee36ef416e60893ed69) Update dependency husky to v2 (#55)
+- [3d5ae81](https://github.com/fabulator/fitbit-api-handler/commit/3d5ae811bdc07089fcd934ddadcf5cefa9b440c1) Update dependency mathjs to ^5.9.0
+- [3ac00c1](https://github.com/fabulator/fitbit-api-handler/commit/3ac00c14974077181f38d86a9cb2f45fe81edb00) Update dependency query-string to ^6.5.0
+- [1c6fb0d](https://github.com/fabulator/fitbit-api-handler/commit/1c6fb0d9c269dfcbe3c18bb7fc602d9fcd579529) Update dependency fitness-models to ^0.4.0
+- [9e5bb14](https://github.com/fabulator/fitbit-api-handler/commit/9e5bb145177c38862ba3a421229a6f6484289c18) Update dependency @types/luxon to ^1.12.0
+- [fef0a97](https://github.com/fabulator/fitbit-api-handler/commit/fef0a972d9f7173c5827430c7ab9c8fb14f1ab11) Update dependency query-string to ^6.4.2
+
 ## [3.1.0] 2019-03-29
 ### Changed
 - Update fitness model dependency

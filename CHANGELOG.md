@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 
 
+## [3.3.0] 2019-10-24
+### Changed
+- [f35755b](https://github.com/fabulator/fitbit-api-handler/commit/f35755bea000f38c070df608751da85758c73692) Update dev dependency @socifi/rollup-config to ^2.2.2
+
 ## [3.2.0] 2019-10-22
 ### Changed
 - [9d44698](https://github.com/fabulator/fitbit-api-handler/commit/9d44698a2770be3428bada1de822e4275db1e261) Update dependencies.

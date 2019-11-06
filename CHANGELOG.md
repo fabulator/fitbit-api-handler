@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 
 
+## [3.8.0] 2019-11-06
+### Added
+- [523766c](https://github.com/fabulator/fitbit-api-handler/commit/523766c4116361a3caa972abb657d081a89d6e81) Weight and cirkuit type exercise.
+
 ## [3.7.0] 2019-11-05
 ### Changed
 - [e89af8e](https://github.com/fabulator/fitbit-api-handler/commit/e89af8e5c82ccad3fb5aa1b9c6b2a8ecc2649a52) Update dependency fitness-models to ^0.8.0

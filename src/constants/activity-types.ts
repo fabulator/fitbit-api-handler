@@ -5,3 +5,5 @@ export const WALKING = 90013;
 export const SKATEBOARDING = 15580;
 export const YOGA = 52000;
 export const SWIMMING = 90024;
+export const WEIGHT_TRAINING = 2131;
+export const CIRKUIT_TRAINING = 2040;

@@ -6,6 +6,8 @@ import {
     SKATEBOARDING,
     YOGA,
     SWIMMING,
+    CIRKUIT_TRAINING,
+    WEIGHT_TRAINING,
 } from '../constants/activity-types';
 
 export type ActivityType = typeof BIKE |
@@ -15,4 +17,6 @@ export type ActivityType = typeof BIKE |
     typeof SKATEBOARDING |
     typeof YOGA |
     typeof SWIMMING |
+    typeof CIRKUIT_TRAINING |
+    typeof WEIGHT_TRAINING |
     number;

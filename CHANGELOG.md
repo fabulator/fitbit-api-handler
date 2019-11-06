@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 
 
+## [3.9.0] 2019-11-06
+### Changed
+- [04ee6c0](https://github.com/fabulator/fitbit-api-handler/commit/04ee6c0d6ee433488850cba441c41cfc18581124) Update dependency luxon to ^1.21.1
+
 ## [3.8.0] 2019-11-06
 ### Added
 - [523766c](https://github.com/fabulator/fitbit-api-handler/commit/523766c4116361a3caa972abb657d081a89d6e81) Weight and cirkuit type exercise.

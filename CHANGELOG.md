@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 
 
+## [3.20.0] 2019-11-25
+### Changed
+- [7b424a0](https://github.com/fabulator/fitbit-api-handler/commit/7b424a0dd4f5324ba94130840a63ae5e149ec0ff) Update dependency rest-api-handler to v2.6.0
+
 ## [3.19.0] 2019-11-22
 ### Changed
 - [6fa6e85](https://github.com/fabulator/fitbit-api-handler/commit/6fa6e855d562be986b47d8ee4e1e53096f122f00) Update dependency fitness-models to ^0.13.0

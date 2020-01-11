@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 
 
+## [3.31.0] 2020-01-11
+### Changed
+- [1bf717d](https://github.com/fabulator/fitbit-api-handler/commit/1bf717d6ca8e0b7fba7889ebcd47fecec04cc8b7) Update dependency fitness-models to ^0.17.0
+
 ## [3.30.0] 2020-01-09
 ### Changed
 - [d101988](https://github.com/fabulator/fitbit-api-handler/commit/d101988aad1beafff11f4a4a2ea2c939d465a823) Update dependency mathjs to v6.5.0

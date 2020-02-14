@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 
 
+## [3.42.0] 2020-02-14
+### Changed
+- [1d71743](https://github.com/fabulator/fitbit-api-handler/commit/1d7174326cae3bba83c163ebf8a803f3d76603bf) Update dependency query-string to v6.11.0
+
 ## [3.41.0] 2020-02-03
 ### Changed
 - [b1ae002](https://github.com/fabulator/fitbit-api-handler/commit/b1ae002d7b9aa71efb4df8ed636495fca5a31068) Update dependency fitness-models to ^0.21.0

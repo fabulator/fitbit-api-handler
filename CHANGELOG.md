@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 
 
+## [3.43.0] 2020-02-27
+### Changed
+- [19e52e7](https://github.com/fabulator/fitbit-api-handler/commit/19e52e792216cd7fa8fa3e33d8eb1baa0e5c4286) Update dependency mathjs to v6.6.1
+- [124c120](https://github.com/fabulator/fitbit-api-handler/commit/124c120f7d2d73b115e31c85bcb08e3f5fd0d9a8) Update dev dependency @socifi/eslint-config to v2.10.2 
+
 ## [3.42.0] 2020-02-14
 ### Changed
 - [1d71743](https://github.com/fabulator/fitbit-api-handler/commit/1d7174326cae3bba83c163ebf8a803f3d76603bf) Update dependency query-string to v6.11.0

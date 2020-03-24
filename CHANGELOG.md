@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 
 
+## [3.49.0] 2020-03-24
+### Changed
+- [154786e](https://github.com/fabulator/fitbit-api-handler/commit/154786e3519c1039776ff5a51a20fa4c938b748a) Update dependency @types/luxon to v1.22.0
+
 ## [3.48.0] 2020-03-23
 ### Changed
 - [6cf203b](https://github.com/fabulator/fitbit-api-handler/commit/6cf203bcd302b49b3ca87caa53a5bf516cd87d4a) Update dependency rest-api-handler to v2.14.0

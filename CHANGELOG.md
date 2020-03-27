@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 
 
+## [3.52.0] 2020-03-27
+### Changed
+- [a2dd275](https://github.com/fabulator/fitbit-api-handler/commit/a2dd275de2a462f3756f92544f457570f7b0e8eb) Update dependency fitness-models to ^0.26.0
+
 ## [3.51.0] 2020-03-26
 ### Changed
 - [6c9d4cd](https://github.com/fabulator/fitbit-api-handler/commit/6c9d4cd6ae2522d4118bdbe83c1e45b7ebcd5d62) Update dependency luxon to v1.22.2

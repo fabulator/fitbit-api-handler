@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 
 
+## [3.56.0] 2020-04-04
+### Changed
+- [4a02df0](https://github.com/fabulator/fitbit-api-handler/commit/4a02df093b80a7aa1986c563c185997cc00d953d) Update dependency luxon to v1.23.0
+
 ## [3.55.0] 2020-04-03
 ### Changed
 - [b63391e](https://github.com/fabulator/fitbit-api-handler/commit/b63391eaeafc84728f24043a4ca2351bcb26b8ce) Update dependency @types/mathjs to v6.0.5

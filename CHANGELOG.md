@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 
 
+## [3.59.0] 2020-04-12
+### Changed
+- [34c1db6](https://github.com/fabulator/fitbit-api-handler/commit/34c1db6ab6a09cef984f499c6eba732097d59f7e) Update dependency mathjs to v6.6.3
+
 ## [3.58.0] 2020-04-07
 ### Changed
 - [2421e8c](https://github.com/fabulator/fitbit-api-handler/commit/2421e8c16e656756e86da1d03c8db8ccd09a0ab7) Update dependency query-string to v6.12.0

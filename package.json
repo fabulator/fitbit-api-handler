@@ -1,6 +1,6 @@
 {
     "name": "fitbit-api-handler",
-    "version": "3.70.0",
+    "version": "4.0.0",
     "description": "Unofficial handler for Fitbit API",
     "main": "dist/index.js",
     "jsnext:main": "dist/index.esm.js",

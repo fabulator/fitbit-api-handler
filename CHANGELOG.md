@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 
 
+## [5.7.0] 2020-06-12
+### Changed
+- [481f6f4](https://github.com/fabulator/fitbit-api-handler/commit/481f6f4dd71f3a8570e0db9b94e464caa686cf24) Update dependency query-string to v6.13.1
+
 ## [5.6.0] 2020-06-07
 ### Changed
 - [3f66ca5](https://github.com/fabulator/fitbit-api-handler/commit/3f66ca52cfee835632e390a68e75567aa431ff37) Update dependency query-string to v6.13.0

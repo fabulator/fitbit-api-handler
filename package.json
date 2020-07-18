@@ -13,8 +13,8 @@
   "license": "Apache-2.0",
   "author": "Michal Ozogán <michal@ozogan.eu>",
   "main": "dist/index.js",
-  "module": "dist/index.esm.js",
-  "jsnext:main": "dist/index.esm.js",
+  "module": "es/index.js",
+  "jsnext:main": "es/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "rollup --config ./rollup.config.js",

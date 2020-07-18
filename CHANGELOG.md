@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 
 
+## v6.0.0 (2020-07-18)
+### Refactored
+- [87e6e6f](https://github.com/fabulator/fitbit-api-handler/commit/87e6e6fdff8710e3d898758c50c6c8e59531a84a) Use new building engine, changed types structure BREAKING
+
 ## [5.18.0] 2020-07-18
 ### Changed
 - [ca577f4](https://github.com/fabulator/fitbit-api-handler/commit/ca577f4f79c164db53a7fc9dab1446e13e9acb3a) Update dependency fitness-models to v2.9.0

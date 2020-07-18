@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 
 
+## v6.0.1 (2020-07-18)
+### Fixed
+- [fe624d0](https://github.com/fabulator/fitbit-api-handler/commit/fe624d05da4d554daa2f2fabc27c4a4a41b4b09b) Path to esmodule
+
 ## v6.0.0 (2020-07-18)
 ### Refactored
 - [87e6e6f](https://github.com/fabulator/fitbit-api-handler/commit/87e6e6fdff8710e3d898758c50c6c8e59531a84a) Use new building engine, changed types structure BREAKING

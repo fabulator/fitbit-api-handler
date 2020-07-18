@@ -1,23 +1,13 @@
 /* eslint-disable max-lines */
-import {
-    Api as ApiBase,
-    DefaultResponseProcessor,
-    ApiResponseType,
-} from 'rest-api-handler';
+import { DateTime, Duration } from 'luxon';
 import { parseUrl } from 'query-string';
-import { DateTime } from 'luxon';
+import { Api as ApiBase, ApiResponseType, DefaultResponseProcessor } from 'rest-api-handler';
+import { IntradayResource } from '../constants/intraday-resources';
+import { ApiScope } from '../constants/scopes';
+import { SubscriptionCollection } from '../constants/subscription-collections';
 import { FitbitApiException } from '../exceptions';
 import { Activity } from '../models';
-import {
-    IntradayResource,
-    ApiToken,
-    ActivityFilters,
-    ApiActivity,
-    ApiSleep,
-    Scope,
-    SubscriptionCollection,
-    DateFilters,
-} from '../types';
+import { ApiActivity, ApiActivityFilters, ApiDateFilters, ApiSleep, ApiToken } from '../types/api';
 import ResponseProcessor from './ResponseProcessor';
 
 type ResponseType = 'code' | 'token';
@@ -25,81 +15,81 @@ type Prompt = 'consent' | 'login' | 'login consent' | 'none';
 type DetailLevel = '1sec' | '1min' | '15min';
 
 interface Pagination {
-    afterDate?: string,
-    limit: number,
-    next: string,
-    offset: number,
-    previous: string,
-    sort: string,
+    afterDate?: string;
+    limit: number;
+    next: string;
+    offset: number;
+    previous: string;
+    sort: string;
 }
 
 export interface ActivityResponse {
-    activities: Activity<number, ApiActivity>[],
-    pagination: Pagination,
+    activities: Activity<number, ApiActivity>[];
+    pagination: Pagination;
 }
 
 export interface SleepProcessedResponse {
+    pagination: Pagination;
     sleep: {
-        dateOfSleep: string,
-        duration: number,
-        efficiency: number,
-        endTime: DateTime,
-        infoCode: number,
-        levels: Record<string, any>,
-        logId: number,
-        minutesAfterWakeup: number,
-        minutesAsleep: number,
-        minutesAwake: number,
-        minutesToFallAsleep: number,
-        startTime: DateTime,
-        timeInBed: number,
-        type: string,
-    }[],
-    pagination: Pagination,
+        dateOfSleep: DateTime;
+        duration: Duration;
+        efficiency: number;
+        endTime: DateTime;
+        infoCode: number;
+        levels: Record<string, any>;
+        logId: number;
+        minutesAfterWakeup: number;
+        minutesAsleep: number;
+        minutesAwake: number;
+        minutesToFallAsleep: number;
+        startTime: DateTime;
+        timeInBed: Duration;
+        type: string;
+    }[];
 }
 
 export interface IntradayResponse {
-    total: number,
     sets: {
-        time: DateTime,
-        value: number,
-    }[],
+        time: DateTime;
+        value: number;
+    }[];
+    total: number;
 }
 
 export interface SubscriptionResponse {
-    collectionType: string,
-    ownerId: string,
-    ownerType: string,
-    subscriberId: string,
-    subscriptionId: string,
+    collectionType: string;
+    ownerId: string;
+    ownerType: string;
+    subscriberId: string;
+    subscriptionId: string;
 }
 
 export interface ActivitySummaryResponse {
-    activities: Activity[],
+    activities: Activity[];
     goals: {
-        caloriesOut: number,
-        distance: number,
-        floors: number,
-        steps: number,
-    },
+        caloriesOut: number;
+        distance: number;
+        floors: number;
+        steps: number;
+    };
     summary: {
-        activityCalories: number,
-        caloriesBMR: number,
-        caloriesOut: number,
-        distances: { activity: string, distance: number }[],
-        elevation: number,
-        fairlyActiveMinutes: number,
-        floors: number,
-        lightlyActiveMinutes: number,
-        marginalCalories: number,
-        sedentaryMinutes: number,
-        steps: number,
-        veryActiveMinutes: number,
-    },
+        activityCalories: number;
+        caloriesBMR: number;
+        caloriesOut: number;
+        distances: { activity: string; distance: number }[];
+        elevation: number;
+        fairlyActiveMinutes: number;
+        floors: number;
+        lightlyActiveMinutes: number;
+        marginalCalories: number;
+        sedentaryMinutes: number;
+        steps: number;
+        veryActiveMinutes: number;
+    };
 }
 
 export type Token = ApiToken & {
-    expireDate: string,
+    expireDate: string;
 };
 
 function base64Encode(string: string): string {
@@ -125,10 +115,7 @@ export default class Api extends ApiBase<ApiResponseType<any>> {
     private dateTimeFormat = `${this.dateFormat}'T'${this.timeFormat}`;
 
     public constructor(clientId: string, secret: string) {
-        super('https://api.fitbit.com', [
-            new DefaultResponseProcessor(FitbitApiException),
-            new ResponseProcessor(),
-        ]);
+        super('https://api.fitbit.com', [new DefaultResponseProcessor(FitbitApiException), new ResponseProcessor()]);
         this.clientId = clientId;
         this.secret = secret;
     }
@@ -152,17 +139,17 @@ export default class Api extends ApiBase<ApiResponseType<any>> {
 
     public getLoginUrl(
         redirectUri: string,
-        scope: Scope[],
+        scope: ApiScope[],
         {
             responseType,
             prompt,
             expiresIn,
             state,
         }: {
-            responseType?: ResponseType,
-            prompt?: Prompt,
-            expiresIn?: number,
-            state?: string,
+            expiresIn?: number;
+            prompt?: Prompt;
+            responseType?: ResponseType;
+            state?: string;
         } = { responseType: 'code' },
     ): string {
         return `https://www.fitbit.com/oauth2/authorize${ApiBase.convertParametersToUrl({
@@ -183,7 +170,7 @@ export default class Api extends ApiBase<ApiResponseType<any>> {
             {},
             {
                 'content-type': 'application/x-www-form-urlencoded',
-                Authorization: `Basic ${base64Encode(`${this.clientId}:${this.secret}`)}`,
+                'Authorization': `Basic ${base64Encode(`${this.clientId}:${this.secret}`)}`,
             },
         );
 
@@ -227,9 +214,15 @@ export default class Api extends ApiBase<ApiResponseType<any>> {
         const until = to || from.endOf('day');
 
         // eslint-disable-next-line max-len
-        const response = await this.get(this.getApiUrl(`activities/${resource}/date/${from.toFormat(this.dateFormat)}/${until.toFormat(this.dateFormat)}/${detail}/time/${from.toFormat(this.timeFormat)}/${until.toFormat(this.timeFormat)}`));
+        const response = await this.get(
+            this.getApiUrl(
+                `activities/${resource}/date/${from.toFormat(this.dateFormat)}/${until.toFormat(
+                    this.dateFormat,
+                )}/${detail}/time/${from.toFormat(this.timeFormat)}/${until.toFormat(this.timeFormat)}`,
+            ),
+        );
 
-        const sets = response.data[`activities-${resource}-intraday`].dataset.map((set: { value: number, time: string }) => {
+        const sets = response.data[`activities-${resource}-intraday`].dataset.map((set: { time: string; value: number }) => {
             return {
                 time: DateTime.fromFormat(`${from.toFormat(this.dateFormat)}${set.time}`, `${this.dateFormat}HH:mm:ss`),
                 value: set.value,
@@ -254,13 +247,8 @@ export default class Api extends ApiBase<ApiResponseType<any>> {
     }
 
     // eslint-disable-next-line complexity
-    private processDateFilters(filters: DateFilters) {
-        const {
-            afterDate,
-            beforeDate,
-            limit,
-            offset,
-        } = filters;
+    private processDateFilters(filters: ApiDateFilters) {
+        const { afterDate, beforeDate, limit, offset } = filters;
 
         return {
             sort: afterDate ? 'asc' : 'desc',
@@ -271,19 +259,19 @@ export default class Api extends ApiBase<ApiResponseType<any>> {
         };
     }
 
-    public async getSleeps(filters: DateFilters): Promise<SleepProcessedResponse> {
-        const { data } = await this.get(
-            this.getApiUrl('sleep/list', undefined, '1.2'),
-            this.processDateFilters(filters),
-        );
+    public async getSleeps(filters: ApiDateFilters): Promise<SleepProcessedResponse> {
+        const { data } = await this.get(this.getApiUrl('sleep/list', undefined, '1.2'), this.processDateFilters(filters));
 
         return {
             ...data,
             sleep: data.sleep.map((sleep: ApiSleep) => {
                 return {
                     ...sleep,
+                    duration: Duration.fromObject({ milliseconds: sleep.duration }),
                     endTime: DateTime.fromISO(sleep.endTime),
                     startTime: DateTime.fromISO(sleep.startTime),
+                    dateOfSleep: DateTime.fromISO(sleep.dateOfSleep),
+                    timeInBed: Duration.fromObject({ minutes: sleep.timeInBed }),
                 };
             }),
         };
@@ -295,7 +283,7 @@ export default class Api extends ApiBase<ApiResponseType<any>> {
     }
 
     // eslint-disable-next-line complexity
-    public async getActivities(filters: ActivityFilters): Promise<ActivityResponse> {
+    public async getActivities(filters: ApiActivityFilters): Promise<ActivityResponse> {
         const { data } = await this.get(this.getApiUrl('activities/list'), this.processDateFilters(filters));
 
         return {
@@ -313,13 +301,12 @@ export default class Api extends ApiBase<ApiResponseType<any>> {
 
         return {
             ...data,
-            // $FlowFixMe
             activities: data.activities.filter((activity) => activity.getStart() <= to),
         };
     }
 
     public async processActivities(
-        filter: ActivityFilters,
+        filter: ApiActivityFilters,
         processor: (activity: Activity<number, ApiActivity>) => Promise<Activity>,
     ): Promise<Activity[]> {
         const { activities, pagination } = await this.getActivities(filter);
@@ -330,8 +317,7 @@ export default class Api extends ApiBase<ApiResponseType<any>> {
 
         if (pagination.next) {
             const data: Record<string, any> = parseUrl(pagination.next).query;
-            // @ts-ignore
-            processorPromises.push(...await this.processActivities(data, processor));
+            processorPromises.push(...((await this.processActivities(data, processor)) as any));
         }
 
         return Promise.all(processorPromises);

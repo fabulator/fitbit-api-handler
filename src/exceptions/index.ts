@@ -1,7 +1,4 @@
-import FitbitException from './FitbitException';
 import FitbitApiException from './FitbitApiException';
+import FitbitException from './FitbitException';
 
-export {
-    FitbitException,
-    FitbitApiException,
-};
+export { FitbitException, FitbitApiException };

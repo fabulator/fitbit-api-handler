@@ -2,15 +2,15 @@ import { ApiResponseType } from 'rest-api-handler';
 import FitbitException from './FitbitException';
 
 interface Error {
-    errorType: string,
-    fieldName: string,
-    message: string,
+    errorType: string;
+    fieldName: string;
+    message: string;
 }
 
 // eslint-disable-next-line no-unused-vars
 type ErrorResponse = ApiResponseType<{
-    errors: Error[],
-    success: false,
+    errors: Error[];
+    success: false;
 }>;
 
 export default class FitbitApiException extends FitbitException {

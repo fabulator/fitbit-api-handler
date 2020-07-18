@@ -411,7 +411,7 @@ Co-authored-by: Renovate Bot <bot@renovateapp.com>
 - Polishing BREAKING
 - Update packages
 - Update fitnes models library
-- Use fitness models dependency for Activity model.
+- Use fitness models dependency for ApiActivity model.
 
 ### Added
 - Changelog for version 2.1.0-beta.3
@@ -428,7 +428,7 @@ Co-authored-by: Renovate Bot <bot@renovateapp.com>
 
 ## [2.1.0-beta.1] 2018-12-22
 ### Changed
-- Use fitness models dependency for Activity model.
+- Use fitness models dependency for ApiActivity model.
 
 ### Other
 - Update dependency @socifi/jest-config to ^2.3.1
@@ -478,7 +478,7 @@ Co-authored-by: Renovate Bot <bot@renovateapp.com>
 
 ## [2.1.0-beta.1] 2018-12-22
 ### Changed
-- Use fitness models dependency for Activity model.
+- Use fitness models dependency for ApiActivity model.
 
 ## [2.0.0] - 2018-11-17
 ### Changed

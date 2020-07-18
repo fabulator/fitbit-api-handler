@@ -33,9 +33,9 @@ global.FormData = require('form-data');
 Check [authentization methods on Fitbit](https://dev.fitbit.com/build/reference/web-api/oauth2/). First generate url for Login to Fitbit:
 
 ```javascript
-const { Api, SCOPES } = require('fitbit-api-handler');
+const { Api, ApiScope } = require('fitbit-api-handler');
 const api = new Api(YOUR_CLIENT_ID, YOUR_CLIENT_SECRET);
-console.log(api.getLoginUrl(YOUR_RETURN_URL, [SCOPES.ACTIVITY, SCOPES.PROFILE]))
+console.log(api.getLoginUrl(YOUR_RETURN_URL, [ApiScope.ACTIVITY, ApiScope.PROFILE]))
 ```
 
 After login you will be redirected to YOUR_RETURN_URL with code parameter. Use this code to create authentization token:

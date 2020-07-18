@@ -1,34 +1,37 @@
+import { Workout, WorkoutConstructor } from 'fitness-models';
 import { DateTime, Duration } from 'luxon';
-import { unit, Unit } from 'mathjs';
-import { Workout, TYPES } from 'fitness-models';
-import { ApiActivity, ActivityType } from '../types';
+import { Unit } from 'mathjs';
+import { ActivityType } from '../constants/activity-types';
 import { FitbitException } from '../exceptions';
+import { unit } from '../helpers/mathjs';
+import { ApiActivity } from '../types/api';
 
-interface Constructor<Id, ApiSource> extends TYPES.WorkoutConstructor {
-    typeId: ActivityType,
-    id: Id,
-    typeName?: string,
-    tcxLink?: string,
-    steps?: number,
-    source: ApiSource,
+interface Constructor<Id, ApiSource> extends WorkoutConstructor {
+    id: Id;
+    source: ApiSource;
+    steps?: number;
+    tcxLink?: string;
+    typeId: ActivityType;
+    typeName?: string;
 }
 
-export default class Activity<Id extends (number | undefined) = any, ApiSource extends (ApiActivity | undefined) = any> extends Workout {
+export default class Activity<Id extends number | undefined = any, ApiSource extends ApiActivity | undefined = any> extends Workout {
     protected typeId: ActivityType;
 
     protected typeName?: string;
 
-    protected id?: number;
+    protected id: Id;
 
     protected steps?: number;
 
     protected tcxLink?: string;
 
-    protected source?: ApiActivity;
+    protected source: ApiSource;
 
     public constructor(options: Constructor<Id, ApiSource>) {
         super(options);
         this.typeId = options.typeId;
+        this.typeName = options.typeName;
         this.id = options.id;
         this.steps = options.steps;
         this.tcxLink = options.tcxLink;
@@ -40,7 +43,7 @@ export default class Activity<Id extends (number | undefined) = any, ApiSource e
 
         const activityId = activity.activityTypeId || activity.activityId;
         if (!activityId) {
-            throw new FitbitException('Activity type ID was not found in API response.');
+            throw new FitbitException('ApiActivity type ID was not found in API response.');
         }
 
         return new Activity({
@@ -77,23 +80,22 @@ export default class Activity<Id extends (number | undefined) = any, ApiSource e
         });
     }
 
-    protected clone(extension: Partial<Constructor<number | undefined, ApiSource>>): any {
-        // @ts-ignore
+    protected clone(extension: Partial<Constructor<number | undefined, ApiSource>>): this {
         return new Activity({
             ...this.toObject(),
             ...extension,
-        });
+        }) as this;
     }
 
     public getId(): number | undefined {
         return this.id;
     }
 
-    public setId(id: number): Activity<number, ApiActivity>
+    public setId(id: number): Activity<number, ApiSource>;
 
-    public setId(id: undefined): Activity<undefined, ApiActivity>
+    public setId(id: undefined): Activity<undefined, ApiSource>;
 
-    public setId(id: number | undefined) {
+    public setId(id: undefined | number): Activity<number | undefined, ApiSource> {
         return this.clone({ id });
     }
 
@@ -126,6 +128,19 @@ export default class Activity<Id extends (number | undefined) = any, ApiSource e
             `start: ${this.getStart().toFormat('yyyy-MM-dd HH:mm')}`,
             distance != null ? `distance: ${Math.round(distance.toNumber('km') * 10) / 10}km` : null,
             `duration: ${Math.round(this.getDuration().as('minutes'))}min`,
-        ].filter((item) => item !== null).join('; ');
+        ]
+            .filter((item) => item !== null)
+            .join('; ');
+    }
+
+    public toObject(): Constructor<Id, ApiSource> {
+        return {
+            ...super.toObject(),
+            typeId: this.typeId,
+            points: this.points,
+            hashtags: this.hashtags,
+            id: this.id,
+            source: this.source,
+        };
     }
 }

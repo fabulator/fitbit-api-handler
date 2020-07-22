@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 
 
+## v6.1.0 (2020-07-22)
+### Changed
+- [d5328cd](https://github.com/fabulator/fitbit-api-handler/commit/d5328cd7ae32fbd692d31370a5e38980ce5b0441) Update dependency @types/luxon to v1.24.2
+- [b7d15c9](https://github.com/fabulator/fitbit-api-handler/commit/b7d15c977c5e28cbf210561f631d7af79645b2ff) Update dev dependency eslint-config-fabulator to v1.0.2 
+
 ## v6.0.1 (2020-07-18)
 ### Fixed
 - [fe624d0](https://github.com/fabulator/fitbit-api-handler/commit/fe624d05da4d554daa2f2fabc27c4a4a41b4b09b) Path to esmodule

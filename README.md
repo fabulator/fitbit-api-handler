@@ -93,3 +93,18 @@ const activity = Activity.get(
 
 const createdActivity = await api.createActivity(activity);
 ```
+
+## Get information about rate limiting
+
+```typescript
+try {
+    await api.createActivity(activity);
+} catch (exception) {
+    if (exception instanceof FitbitApiLimitException) {
+        const retryIn: Duration = exception.retryIn();
+        console.log(`Wait for ${retryIn.as('seconds')}`);
+    }
+}
+
+console.log(api.getFillRateLimits());
+```

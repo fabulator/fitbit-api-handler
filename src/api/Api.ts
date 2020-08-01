@@ -5,16 +5,18 @@ import { Api as ApiBase, ApiResponseType, DefaultResponseProcessor } from 'rest-
 import { IntradayResource } from '../constants/intraday-resources';
 import { ApiScope } from '../constants/scopes';
 import { SubscriptionCollection } from '../constants/subscription-collections';
-import { FitbitApiException } from '../exceptions';
+import { FitbitApiException, FitbitApiLimitException } from '../exceptions';
+import getRateLimits from '../helpers/getRateLimits';
 import { Activity } from '../models';
 import { ApiActivity, ApiActivityFilters, ApiDateFilters, ApiSleep, ApiToken } from '../types/api';
+import { SleepProcessedResponse } from '../types/api/ApiSleep';
 import ResponseProcessor from './ResponseProcessor';
 
 type ResponseType = 'code' | 'token';
 type Prompt = 'consent' | 'login' | 'login consent' | 'none';
 type DetailLevel = '1sec' | '1min' | '15min';
 
-interface Pagination {
+export interface Pagination {
     afterDate?: string;
     limit: number;
     next: string;
@@ -26,26 +28,6 @@ interface Pagination {
 export interface ActivityResponse {
     activities: Activity<number, ApiActivity>[];
     pagination: Pagination;
-}
-
-export interface SleepProcessedResponse {
-    pagination: Pagination;
-    sleep: {
-        dateOfSleep: DateTime;
-        duration: Duration;
-        efficiency: number;
-        endTime: DateTime;
-        infoCode: number;
-        levels: Record<string, any>;
-        logId: number;
-        minutesAfterWakeup: number;
-        minutesAsleep: number;
-        minutesAwake: number;
-        minutesToFallAsleep: number;
-        startTime: DateTime;
-        timeInBed: Duration;
-        type: string;
-    }[];
 }
 
 export interface IntradayResponse {
@@ -101,6 +83,8 @@ function base64Encode(string: string): string {
     return Buffer.from(string).toString('base64');
 }
 
+export type ArgumentsType<T> = T extends (...args: infer A) => any ? A : never;
+
 export default class Api extends ApiBase<ApiResponseType<any>> {
     private clientId: string;
 
@@ -114,10 +98,48 @@ export default class Api extends ApiBase<ApiResponseType<any>> {
 
     private dateTimeFormat = `${this.dateFormat}'T'${this.timeFormat}`;
 
+    private rateLimit?: number;
+
+    private rateRemaining?: number;
+
+    private rateReset?: Duration;
+
     public constructor(clientId: string, secret: string) {
         super('https://api.fitbit.com', [new DefaultResponseProcessor(FitbitApiException), new ResponseProcessor()]);
         this.clientId = clientId;
         this.secret = secret;
+    }
+
+    private fillRateLimits(headers: Headers) {
+        const { rateLimit, rateRemaining, rateReset } = getRateLimits(headers);
+        this.rateLimit = rateLimit;
+        this.rateRemaining = rateRemaining;
+        this.rateReset = rateReset;
+    }
+
+    public getFillRateLimits() {
+        return {
+            rateLimit: this.rateLimit,
+            rateRemaining: this.rateRemaining,
+            rateReset: this.rateReset,
+        };
+    }
+
+    public async request(...parameters: ArgumentsType<typeof ApiBase.prototype.request>) {
+        try {
+            const response = await super.request(...parameters);
+            this.fillRateLimits(response.source.headers);
+            return response;
+        } catch (exception) {
+            if (exception instanceof FitbitApiException) {
+                this.fillRateLimits(exception.getResponse().source.headers);
+
+                if (exception.getResponse().status === 429) {
+                    throw new FitbitApiLimitException(exception.getResponse(), exception.getRequest());
+                }
+            }
+            throw exception;
+        }
     }
 
     private getDateString(date: DateTime) {
@@ -266,12 +288,17 @@ export default class Api extends ApiBase<ApiResponseType<any>> {
             ...data,
             sleep: data.sleep.map((sleep: ApiSleep) => {
                 return {
-                    ...sleep,
+                    id: sleep.logId,
+                    startDateTime: DateTime.fromISO(sleep.startTime, { zone: 'UTC+0' }),
+                    endDateTime: DateTime.fromISO(sleep.endTime, { zone: 'UTC+0' }),
                     duration: Duration.fromObject({ milliseconds: sleep.duration }),
-                    endTime: DateTime.fromISO(sleep.endTime),
-                    startTime: DateTime.fromISO(sleep.startTime),
-                    dateOfSleep: DateTime.fromISO(sleep.dateOfSleep),
-                    timeInBed: Duration.fromObject({ minutes: sleep.timeInBed }),
+                    isMainSleep: sleep.isMainSleep,
+                    efficiency: sleep.efficiency,
+                    afterWakeup: Duration.fromObject({ minutes: sleep.minutesAfterWakeup }),
+                    asleep: Duration.fromObject({ minutes: sleep.minutesAsleep }),
+                    awake: Duration.fromObject({ minutes: sleep.minutesAwake }),
+                    toFallAsleep: Duration.fromObject({ minutes: sleep.minutesToFallAsleep }),
+                    source: sleep,
                 };
             }),
         };

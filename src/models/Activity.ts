@@ -87,7 +87,7 @@ export default class Activity<Id extends number | undefined = any, ApiSource ext
         }) as this;
     }
 
-    public getId(): number | undefined {
+    public getId() {
         return this.id;
     }
 

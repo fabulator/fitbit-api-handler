@@ -7,12 +7,6 @@ interface Error {
     message: string;
 }
 
-// eslint-disable-next-line no-unused-vars
-type ErrorResponse = ApiResponseType<{
-    errors: Error[];
-    success: false;
-}>;
-
 export default class FitbitApiException extends FitbitException {
     private response: ApiResponseType<any>;
 
@@ -20,7 +14,7 @@ export default class FitbitApiException extends FitbitException {
 
     public constructor(response: ApiResponseType<any>, request: Request) {
         const { data } = response;
-        super(data.errors ? data.errors.map((item: any) => item.message).join(', ') : JSON.stringify(data));
+        super(data.errors ? data.errors.map((item: { message: any[] }) => item.message).join(', ') : JSON.stringify(data));
         this.response = response;
         this.request = request;
     }

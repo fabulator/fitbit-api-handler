@@ -1,5 +1,5 @@
 import { DateTime, Duration } from 'luxon';
-import { Activity, ACTIVITY_TYPES } from '../../src';
+import { Activity, ActivityType } from '../../src';
 import { unit } from '../../src/helpers/mathjs';
 
 describe('Test ApiActivity class', () => {
@@ -9,7 +9,7 @@ describe('Test ApiActivity class', () => {
             source: undefined,
             start: DateTime.local(),
             duration: Duration.fromObject({ day: 1 }),
-            typeId: ACTIVITY_TYPES.RUNNING,
+            typeId: ActivityType.RUNNING,
             distance: unit(2, 'km'),
         });
 

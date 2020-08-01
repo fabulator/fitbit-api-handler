@@ -2,6 +2,13 @@
 All notable changes to this project will be documented in this file.
 
 
+## v6.4.0 (2020-08-01)
+### Added
+- [1646c0f](https://github.com/fabulator/fitbit-api-handler/commit/1646c0fd37f2806a5819bdb7f942d1192491cfe8) Support for rate limiting
+
+### Changed
+- [1646c0f](https://github.com/fabulator/fitbit-api-handler/commit/1646c0fd37f2806a5819bdb7f942d1192491cfe8) Format of sleep response.
+
 ## v6.3.0 (2020-07-24)
 ### Changed
 - [dfff8d5](https://github.com/fabulator/fitbit-api-handler/commit/dfff8d59db1cc97c31f4f560ad9b187ec9b18f95) Update dependency @types/luxon to v1.24.3

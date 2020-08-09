@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 
 
+## v6.5.0 (2020-08-09)
+### Added
+- [bbe3df9](https://github.com/fabulator/fitbit-api-handler/commit/bbe3df9ae4c487ed13326e220e45f538edefe9de) Tcx exporter
+
 ## v6.4.0 (2020-08-01)
 ### Added
 - [1646c0f](https://github.com/fabulator/fitbit-api-handler/commit/1646c0fd37f2806a5819bdb7f942d1192491cfe8) Support for rate limiting

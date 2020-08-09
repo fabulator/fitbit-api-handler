@@ -227,6 +227,11 @@ export default class Api extends ApiBase<ApiResponseType<any>> {
         return `${version}/user/${userId || '-'}/${namespace}.${file}`;
     }
 
+    public async getProfile() {
+        const { data } = await this.get(this.getApiUrl('profile'));
+        return data;
+    }
+
     public async getIntradayData(
         resource: IntradayResource,
         from: DateTime,
@@ -309,6 +314,11 @@ export default class Api extends ApiBase<ApiResponseType<any>> {
         return Activity.fromApi(data.activityLog);
     }
 
+    public async getActivityTcx(activityId: number): Promise<string> {
+        const { data } = await this.get(this.getApiUrl(`activities/${activityId}`, undefined, '1.1', 'tcx'));
+        return data;
+    }
+
     // eslint-disable-next-line complexity
     public async getActivities(filters: ApiActivityFilters): Promise<ActivityResponse> {
         const { data } = await this.get(this.getApiUrl('activities/list'), this.processDateFilters(filters));
@@ -321,9 +331,10 @@ export default class Api extends ApiBase<ApiResponseType<any>> {
         };
     }
 
-    public async getActivitiesBetweenDates(from: DateTime, to: DateTime): Promise<ActivityResponse> {
+    public async getActivitiesBetweenDates(from: DateTime, to: DateTime, limit = 10): Promise<ActivityResponse> {
         const data = await this.getActivities({
             afterDate: from,
+            limit,
         });
 
         return {

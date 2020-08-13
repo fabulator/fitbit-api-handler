@@ -286,8 +286,8 @@ export default class Api extends ApiBase<ApiResponseType<any>> {
         };
     }
 
-    public async getSleeps(filters: ApiDateFilters): Promise<SleepProcessedResponse> {
-        const { data } = await this.get(this.getApiUrl('sleep/list', undefined, '1.2'), this.processDateFilters(filters));
+    private async requestSleepData(url: string, query?: {}): Promise<SleepProcessedResponse> {
+        const { data } = await this.get(url, query);
 
         return {
             ...data,
@@ -307,6 +307,14 @@ export default class Api extends ApiBase<ApiResponseType<any>> {
                 };
             }),
         };
+    }
+
+    public async getSleep(date: DateTime): Promise<SleepProcessedResponse> {
+        return this.requestSleepData(this.getApiUrl(`sleep/date/${date.toFormat(this.dateFormat)}`, undefined, '1.2'));
+    }
+
+    public async getSleeps(filters: ApiDateFilters): Promise<SleepProcessedResponse> {
+        return this.requestSleepData(this.getApiUrl('sleep/list', undefined, '1.2'), this.processDateFilters(filters));
     }
 
     public async getActivity(activityId: number): Promise<Activity<number, ApiActivity>> {

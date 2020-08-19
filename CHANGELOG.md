@@ -2,6 +2,13 @@
 All notable changes to this project will be documented in this file.
 
 
+## v6.6.0 (2020-08-19)
+### Fixed
+- [85519ac](https://github.com/fabulator/fitbit-api-handler/commit/85519acfa23134fca23b6dd96dd039bcab453810) Lint
+
+### Added
+- [cdc81b4](https://github.com/fabulator/fitbit-api-handler/commit/cdc81b46bd576c928023308e9f26690f76f4ed9b) Query to sleeps from single day.
+
 ## v6.5.0 (2020-08-09)
 ### Added
 - [bbe3df9](https://github.com/fabulator/fitbit-api-handler/commit/bbe3df9ae4c487ed13326e220e45f538edefe9de) Tcx exporter

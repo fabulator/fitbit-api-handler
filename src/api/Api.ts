@@ -286,7 +286,7 @@ export default class Api extends ApiBase<ApiResponseType<any>> {
         };
     }
 
-    private async requestSleepData(url: string, query?: {}): Promise<SleepProcessedResponse> {
+    private async requestSleepData(url: string, query?: Record<string, any>): Promise<SleepProcessedResponse> {
         const { data } = await this.get(url, query);
 
         return {

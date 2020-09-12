@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 
 
+## v6.7.2 (2020-09-12)
+### Fixed
+- [3b36f14](https://github.com/fabulator/fitbit-api-handler/commit/3b36f1406230325b95ea9e49ed498f7fafe60a75) Exporting enumbs
+
 ## v6.7.1 (2020-09-12)
 ### Fixed
 - [4f80029](https://github.com/fabulator/fitbit-api-handler/commit/4f80029b30c503403f2f65ee8491cf67b96bd065) Remove some CI tools

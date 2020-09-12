@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 
 
+## v6.7.1 (2020-09-12)
+### Fixed
+- [4f80029](https://github.com/fabulator/fitbit-api-handler/commit/4f80029b30c503403f2f65ee8491cf67b96bd065) Remove some CI tools
+
 ## v6.7.0 (2020-09-12)
 ### Added
 - [f844890](https://github.com/fabulator/fitbit-api-handler/commit/f8448902f0e35c3a80824478c8108d5b0925093e) Method for verifiing Fitbit requests

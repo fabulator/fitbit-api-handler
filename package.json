@@ -1,6 +1,6 @@
 {
   "name": "fitbit-api-handler",
-  "version": "6.7.0",
+  "version": "6.7.1",
   "description": "Unofficial handler for Fitbit API",
   "homepage": "https://github.com/fabulator/fitbit-api-handler",
   "bugs": {

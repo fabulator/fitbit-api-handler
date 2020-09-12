@@ -1,4 +1,5 @@
 /* eslint-disable max-lines */
+import crypto from 'crypto';
 import { DateTime, Duration } from 'luxon';
 import { parseUrl } from 'query-string';
 import { Api as ApiBase, ApiResponseType, DefaultResponseProcessor } from 'rest-api-handler';
@@ -9,7 +10,7 @@ import { FitbitApiException, FitbitApiLimitException } from '../exceptions';
 import getRateLimits from '../helpers/getRateLimits';
 import { Activity } from '../models';
 import { ApiActivity, ApiActivityFilters, ApiDateFilters, ApiSleep, ApiToken } from '../types/api';
-import { SleepProcessedResponse } from '../types/api/ApiSleep';
+import { SingleDayProcessedResponse, SleepProcessedResponse } from '../types/api/ApiSleep';
 import ResponseProcessor from './ResponseProcessor';
 
 type ResponseType = 'code' | 'token';
@@ -309,7 +310,7 @@ export default class Api extends ApiBase<ApiResponseType<any>> {
         };
     }
 
-    public async getSleep(date: DateTime): Promise<SleepProcessedResponse> {
+    public async getSleep(date: DateTime): Promise<SingleDayProcessedResponse> {
         return this.requestSleepData(this.getApiUrl(`sleep/date/${date.toFormat(this.dateFormat)}`, undefined, '1.2'));
     }
 
@@ -449,5 +450,11 @@ export default class Api extends ApiBase<ApiResponseType<any>> {
     public async getSubscriptions(collection?: SubscriptionCollection): Promise<SubscriptionResponse[]> {
         const data: any = await this.requestSubscription('GET', collection);
         return data.apiSubscriptions;
+    }
+
+    public verifyFitbitRequest(body: string, signature: string) {
+        const hmac = crypto.createHmac('sha1', `${this.secret}&`);
+        hmac.update(body);
+        return encodeURI(hmac.digest().toString('base64')) === signature;
     }
 }

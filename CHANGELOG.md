@@ -2,6 +2,22 @@
 All notable changes to this project will be documented in this file.
 
 
+## v7.0.0 (2021-07-18)
+### Fixed
+- [1f546c3](https://github.com/fabulator/fitbit-api-handler/commit/1f546c32898f0cc942191f00a3dd9c6c979ea6fb) Lint
+- [36de92d](https://github.com/fabulator/fitbit-api-handler/commit/36de92d888cbfb82df4c7315e1f8c6496403eaf7) Update dependencies
+- [9f8bcec](https://github.com/fabulator/fitbit-api-handler/commit/9f8bcece608cad860af47a1e52ef1d234a0209bd) mathjs dependency
+- [95e2db5](https://github.com/fabulator/fitbit-api-handler/commit/95e2db52b523fee3fab5f253c7937fc919028bb9) Update lock for security updated
+- [85abb64](https://github.com/fabulator/fitbit-api-handler/commit/85abb642e30be1d77c1ebdc4319c605e179824b1) Update lock for security updated
+- [20ce48b](https://github.com/fabulator/fitbit-api-handler/commit/20ce48b1a1af76215af5cec4a204dce0c9dc3a85) Update lock for security updated
+- [acc28c1](https://github.com/fabulator/fitbit-api-handler/commit/acc28c194655d4214414f52a3e106ad6c23ea849) Update lock for security updated
+- [07fa8de](https://github.com/fabulator/fitbit-api-handler/commit/07fa8de2b8ae1683062902c89dbc2928418cec41) Update lock for security updated
+
+### Changed
+- [bfa091e](https://github.com/fabulator/fitbit-api-handler/commit/bfa091ebca625a0f49cb404e5a090a670f3fef1a) Update dependency mathjs to v9 BREAKING (#200)
+
+Co-authored-by: Renovate Bot <bot@renovateapp.com>
+
 ## v6.7.13 (2020-11-23)
 ### Fixed
 - [92f749e](https://github.com/fabulator/fitbit-api-handler/commit/92f749e6e334548d25da2f6a5c08829927dd7cf6) Update lock for security updated

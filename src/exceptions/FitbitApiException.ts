@@ -24,7 +24,7 @@ export default class FitbitApiException extends FitbitException {
     }
 
     public hasError(error: string): boolean {
-        return !!this.getErrors().find((item) => item.errorType === error);
+        return this.getErrors().some((item) => item.errorType === error);
     }
 
     public getResponse(): ApiResponseType<any> {

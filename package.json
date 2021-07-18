@@ -32,18 +32,18 @@
   "dependencies": {
     "@babel/runtime": "^7.14.6",
     "@types/luxon": "^1.27.1",
-    "fitness-models": "^4.0.3",
+    "fitness-models": "^4.1.0",
     "luxon": "^2.0.1",
     "mathjs": "^9.4.4",
     "query-string": "^7.0.1",
-    "rest-api-handler": "^2.20.0"
+    "rest-api-handler": "^2.21.0"
   },
   "devDependencies": {
-    "babel-config-fabulator": "^1.1.0",
-    "commitlint-config-fabulator": "^1.1.0",
-    "eslint-config-fabulator": "^1.1.1",
-    "jest-config-fabulator": "^1.0.0",
-    "rollup-config-fabulator": "^1.0.0",
-    "semantic-release-config-fabulator": "^2.6.1"
+    "babel-config-fabulator": "^1.2.1",
+    "commitlint-config-fabulator": "^2.0.2",
+    "eslint-config-fabulator": "^1.2.3",
+    "jest-config-fabulator": "^1.1.0",
+    "rollup-config-fabulator": "^1.1.0",
+    "semantic-release-config-fabulator": "^2.6.2"
   }
 }

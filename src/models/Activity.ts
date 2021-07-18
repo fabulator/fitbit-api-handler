@@ -38,25 +38,39 @@ export default class Activity<Id extends number | undefined = any, ApiSource ext
     }
 
     public static fromApi(activity: ApiActivity): Activity<number, ApiActivity> {
-        const { distance } = activity;
+        const {
+            distance,
+            startTime,
+            activityTypeId,
+            activityId: activityIdSource,
+            logId,
+            duration,
+            activityName,
+            name,
+            averageHeartRate,
+            calories,
+            steps,
+            tcxLink,
+        } = activity;
 
-        const activityId = activity.activityTypeId || activity.activityId;
+        const activityId = activityTypeId || activityIdSource;
+
         if (!activityId) {
             throw new FitbitException('ApiActivity type ID was not found in API response.');
         }
 
         return new Activity({
-            start: DateTime.fromISO(activity.startTime, { setZone: true }),
-            id: activity.logId,
-            duration: Duration.fromMillis(activity.duration),
-            typeName: activity.activityName || activity.name,
+            start: DateTime.fromISO(startTime, { setZone: true }),
+            id: logId,
+            duration: Duration.fromMillis(duration),
+            typeName: activityName || name,
             typeId: activityId,
-            avgHeartRate: activity.averageHeartRate,
-            calories: activity.calories,
-            steps: activity.steps,
-            tcxLink: activity.tcxLink,
+            avgHeartRate: averageHeartRate,
+            calories,
+            steps,
+            tcxLink,
             source: activity,
-            ...(distance != null ? { distance: unit(activity.distance, 'km') } : {}),
+            ...(distance != null ? { distance: unit(distance, 'km') } : {}),
         });
     }
 

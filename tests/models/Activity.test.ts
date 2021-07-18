@@ -1,6 +1,6 @@
 import { DateTime, Duration } from 'luxon';
+import { unit } from 'mathjs';
 import { Activity, ActivityType } from '../../src';
-import { unit } from '../../src/helpers/mathjs';
 
 describe('Test ApiActivity class', () => {
     it('has corrent unit in distance', () => {

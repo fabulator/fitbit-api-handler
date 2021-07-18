@@ -1,9 +1,8 @@
 import { Workout, WorkoutConstructor } from 'fitness-models';
 import { DateTime, Duration } from 'luxon';
-import { Unit } from 'mathjs';
+import { Unit, unit } from 'mathjs';
 import { ActivityType } from '../constants/activity-types';
 import { FitbitException } from '../exceptions';
-import { unit } from '../helpers/mathjs';
 import { ApiActivity } from '../types/api';
 
 interface Constructor<Id, ApiSource> extends WorkoutConstructor {

@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 
 
+## v7.0.1 (2021-07-19)
+### Fixed
+- [6c35805](https://github.com/fabulator/fitbit-api-handler/commit/6c358058c9db6e59996e22fb667d00fa1b588327) Update lock for security updated
+
 ## v7.0.0 (2021-07-18)
 ### Fixed
 - [1f546c3](https://github.com/fabulator/fitbit-api-handler/commit/1f546c32898f0cc942191f00a3dd9c6c979ea6fb) Lint

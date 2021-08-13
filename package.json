@@ -31,7 +31,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.14.6",
-    "@types/luxon": "^1.27.1",
+    "@types/luxon": "^2.0.0",
     "fitness-models": "^4.1.0",
     "luxon": "^2.0.1",
     "mathjs": "^9.4.4",

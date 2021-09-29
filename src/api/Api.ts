@@ -12,6 +12,7 @@ import { Activity } from '../models';
 import { ApiActivity, ApiActivityFilters, ApiDateFilters, ApiSleep, ApiToken } from '../types/api';
 import { SingleDayProcessedResponse, SleepProcessedResponse } from '../types/api/ApiSleep';
 import ResponseProcessor from './ResponseProcessor';
+import { ApiWeight } from '../types/api/ApiWeight';
 
 type ResponseType = 'code' | 'token';
 type Prompt = 'consent' | 'login' | 'login consent' | 'none';
@@ -308,6 +309,23 @@ export default class Api extends ApiBase<ApiResponseType<any>> {
                 };
             }),
         };
+    }
+
+    public async getWeights(from: DateTime, to: DateTime): Promise<ApiWeight[]> {
+        const { data } = await this.get(
+            this.getApiUrl(`body/log/weight/date/${from.toFormat(this.dateFormat)}/${to.toFormat(this.dateFormat)}`),
+        );
+
+        return data.weight.map((item: { bmi: number; date: string; logId: number; source: string; time: string; weight: number }) => {
+            console.log(item.time);
+            return {
+                bmi: item.bmi,
+                datetime: DateTime.fromISO(`${item.date}T${item.time}+00:00`),
+                logId: item.logId,
+                weight: item.weight,
+                source: item.source,
+            };
+        });
     }
 
     public async getSleep(date: DateTime): Promise<SingleDayProcessedResponse> {

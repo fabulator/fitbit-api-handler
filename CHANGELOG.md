@@ -2,6 +2,14 @@
 All notable changes to this project will be documented in this file.
 
 
+## v7.1.0 (2021-09-30)
+### Other
+- [81b6f14](https://github.com/fabulator/fitbit-api-handler/commit/81b6f141e65b962cc377f4fa72929b06d687b42d) wip
+- [dfe3788](https://github.com/fabulator/fitbit-api-handler/commit/dfe3788389146fe8b3fe0b4714c3942886ffd519) WIP
+
+### Changed
+- [bffa2a0](https://github.com/fabulator/fitbit-api-handler/commit/bffa2a021ff97acbeb3488970b59937fbf38fe9f) Add weight readings
+
 ## v7.0.5 (2021-08-01)
 ### Fixed
 - [d98e7b7](https://github.com/fabulator/fitbit-api-handler/commit/d98e7b79772aff549d2133599aafc2a802a468dd) Update lock for security updated

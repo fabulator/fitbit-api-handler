@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 
 
+## v7.1.1 (2021-09-30)
+### Fixed
+- [79cff01](https://github.com/fabulator/fitbit-api-handler/commit/79cff017a01f728f9982eed6b28aa38e720dd226) forgot console.log
+
 ## v7.1.0 (2021-09-30)
 ### Other
 - [81b6f14](https://github.com/fabulator/fitbit-api-handler/commit/81b6f141e65b962cc377f4fa72929b06d687b42d) wip

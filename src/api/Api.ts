@@ -317,7 +317,6 @@ export default class Api extends ApiBase<ApiResponseType<any>> {
         );
 
         return data.weight.map((item: { bmi: number; date: string; logId: number; source: string; time: string; weight: number }) => {
-            console.log(item.time);
             return {
                 bmi: item.bmi,
                 datetime: DateTime.fromISO(`${item.date}T${item.time}+00:00`),

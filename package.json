@@ -34,7 +34,7 @@
     "@types/luxon": "^2.0.4",
     "fitness-models": "^4.2.0",
     "luxon": "^2.0.2",
-    "mathjs": "^9.5.0",
+    "mathjs": "^10.0.0",
     "query-string": "^7.0.1",
     "rest-api-handler": "^2.21.9"
   },

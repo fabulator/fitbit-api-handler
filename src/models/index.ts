@@ -1,3 +1,1 @@
-import Activity from './Activity';
-
-export { Activity };
+export { default as Activity } from './Activity';

@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 
 
+## v7.2.11 (2022-03-07)
+### Fixed
+- [efbc89f](https://github.com/fabulator/fitbit-api-handler/commit/efbc89f91fd488b5a54026023ff1800a3fc3ff72) Update lock to make security bots happy.
+
 ## v7.2.10 (2022-03-07)
 ### Fixed
 - [edfb36e](https://github.com/fabulator/fitbit-api-handler/commit/edfb36ecf8139f8c5dffa4997f6254b5f7b8d483) Update lock to make security bots happy.

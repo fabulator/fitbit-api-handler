@@ -2,6 +2,18 @@
 All notable changes to this project will be documented in this file.
 
 
+## v8.0.0 (2022-04-02)
+### Changed
+- [a4a5476](https://github.com/fabulator/fitbit-api-handler/commit/a4a5476a977e3a5f2640646ae506a499b9e27e7c) Update dependency fitness-models to v6 BREAKING (#230)
+
+Co-authored-by: Renovate Bot <bot@renovateapp.com>
+- [9d906b3](https://github.com/fabulator/fitbit-api-handler/commit/9d906b339bf0f1a809e10ed5612ff2a603f88b03) Update actions/setup-node action to v3 (#235)  
+
+Co-authored-by: Renovate Bot <bot@renovateapp.com>
+- [3245c61](https://github.com/fabulator/fitbit-api-handler/commit/3245c61592fb4eea874e1a34b5fb7a37b053e578) Update actions/checkout action to v3 (#238)  
+
+Co-authored-by: Renovate Bot <bot@renovateapp.com>
+
 ## v7.2.18 (2022-03-28)
 ### Fixed
 - [a2e719d](https://github.com/fabulator/fitbit-api-handler/commit/a2e719d902d1749ff05fe7d29bb58a2382c6974f) Update lock to make security bots happy.

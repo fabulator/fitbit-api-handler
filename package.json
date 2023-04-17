@@ -33,7 +33,7 @@
     "@babel/runtime": "^7.17.0",
     "@types/luxon": "^2.0.9",
     "fitness-models": "^6.0.0",
-    "luxon": "^2.3.0",
+    "luxon": "^2.5.2",
     "mathjs": "^10.1.1",
     "query-string": "^7.1.1",
     "rest-api-handler": "^2.22.0"
